@@ -1,6 +1,6 @@
 AUTHOR = 'Dmitry Kolomatskiy'
 SITENAME = "Mitya's Self-Explanatory"
-SITEURL = "http://127.0.0.1:8000"
+SITEURL = "https://lemontree210.github.io"
 
 PATH = "content"
 STATIC_PATHS = ["images"]
