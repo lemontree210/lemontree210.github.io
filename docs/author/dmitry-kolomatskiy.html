@@ -3,11 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <title>Mitya's Self-Explanatory</title>
-    <link rel="shortcut icon" type="image/png" href="http://127.0.0.1:8000/favicon.png">
-    <link rel="shortcut icon" type="image/x-icon" href="http://127.0.0.1:8000/favicon.ico">
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/main.css" type="text/css" />
-    <link rel="stylesheet" href="http://127.0.0.1:8000/theme/css/pygments.css" type="text/css" />
+    <title>Mitya's Self-Explanatory | Articles by Dmitry Kolomatskiy</title>
+    <link rel="shortcut icon" type="image/png" href="https://lemontree210.github.io/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="https://lemontree210.github.io/favicon.ico">
+    <link rel="stylesheet" href="https://lemontree210.github.io/theme/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="https://lemontree210.github.io/theme/css/pygments.css" type="text/css" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="" />
     <meta name="author" content="Dmitry Kolomatskiy" />
@@ -16,11 +16,13 @@
     <header>
         <nav style="overflow: hidden;">
             <ul>
-                <li class="selected"><a href="http://127.0.0.1:8000/">Home</a></li>
+
+                <li class="ephemeral selected"><a href="https://lemontree210.github.io/author/dmitry-kolomatskiy.html">Dmitry Kolomatskiy</a></li>
+                <li><a href="https://lemontree210.github.io/">Home</a></li>
             </ul>
         </nav>
         <div class="header_box" style="height: 50px">
-        <h1><a href="http://127.0.0.1:8000/">
+        <h1><a href="https://lemontree210.github.io/">
             <image src='' class="avatar" width="50px" /><span class="site_title">Mitya's Self-Explanatory</span>
             </a></h1></div>
         </div>
@@ -30,7 +32,7 @@
 
             <article class="post">
                 <h2 class="title">
-                    <a href="http://127.0.0.1:8000/why-do-we-need-neural-networks-with-hidden-layers.html" rel="bookmark" title="Permanent Link to &quot;Why Do We Need Neural Networks with Hidden Layers?&quot;">Why Do We Need Neural Networks with Hidden Layers?</a>
+                    <a href="https://lemontree210.github.io/why-do-we-need-neural-networks-with-hidden-layers.html" rel="bookmark" title="Permanent Link to &quot;Why Do We Need Neural Networks with Hidden Layers?&quot;">Why Do We Need Neural Networks with Hidden Layers?</a>
                 </h2>
 
                 
@@ -42,10 +44,10 @@
 <p><img src="https://www.oreilly.com/api/v2/epubs/9781788830577/files/assets/c608dc6d-58f1-4548-b5d7-f3ba22fe1709.png">
 <em>Source: <a href="https://www.oreilly.com/library/view/machine-learning-quick/9781788830577/69e8b23d-701f-4be3-9949-373b98962b43.xhtml">O'Reilly</a></em></p>
 <p>To try and fix this, we can produce a feature cross, for example multiplying [square of] one feature by [square of] another (it is possible, since all features, even categorical ones, are represented as numbers). We still have a linear equation, but the line now looks curvy (or it's a hyperbolic line, so looks like two separate curvy lines). Since the equation is still linear, we can imagine that in a space with more dimensions, there is a perfectly flat plane or hyperplane separating two original features. We can try and create feature crosses by hand, adjusting weights now not only for original features, but for their crosses as well.</p>
-<p><img alt="Feature cross" src="http://127.0.0.1:8000/images/featurecross1.jpg" title="Feature cross">
+<p><img alt="Feature cross" src="https://lemontree210.github.io/images/featurecross1.jpg" title="Feature cross">
 <em>This feature cross works well. Screenshot from <a href="https://playground.tensorflow.org">TensorFlow Playground</a></em></p>
 <p>But feature crosses aren't enough for complex dependencies.</p>
-<p><img alt="Feature cross" src="http://127.0.0.1:8000/images/featurecross2.jpg" title="Feature cross">
+<p><img alt="Feature cross" src="https://lemontree210.github.io/images/featurecross2.jpg" title="Feature cross">
 <em>Here, a feature cross doesn't work well. Screenshot from <a href="https://playground.tensorflow.org">TensorFlow Playground</a></em></p>
 <p>Just like we previously asked the model to figure out the weights and bias on its own, we can now ask it to create abstract combinations of features on its own as well and see if it helps separate features.</p>
 <p>This process can't be done with a simple model layout of one input layer and one output layer. So we create "hidden" layers, in which our model creates abstract interactions between inputs, adjusts their weights, adds bias, feeds them to subsequent hidden layers where new abstractions are created, and so on.</p>
@@ -53,7 +55,7 @@
 <p>Okay, so we have added some layers. Despite our space of features now being multidimensional and transformations looking very complex, without an additional operation its predictions will only work with linear dependencies between features.</p>
 <p>To address this problem, at each layer we introduce a function called "activation function". The model takes the bias summed with all products of values and weights and feeds them to this function. If the activation function is non-linear, our model gets the ability to work with non-linear dependencies.</p>
 <p>Popular examples of activation functions are Sigmoid (more correctly, logistic, since "sigmoid" is too general a term; produces values between 0 and 1), tanh (short for "hyperbolic tangent"; also an S-shaped function, like sigmoid, and produces values between -1 and 1) and ReLU (short for "Rectified Linear Unit", produces 0 for negative values and preserves original value for positive ones). Usually, the same activation function is applied to all hidden layers, then a task-specific function (could be same, could be different) is applied to outputs of the last hidden layer to produce the final output of the model.</p>
-<p><img alt="ReLU" src="http://127.0.0.1:8000/images/relu.jpg" title="Problem solved with one hidden layer and ReLU activation function">
+<p><img alt="ReLU" src="https://lemontree210.github.io/images/relu.jpg" title="Problem solved with one hidden layer and ReLU activation function">
 <em>Problem solved with one hidden layer and ReLU activation function. Screenshot from <a href="https://playground.tensorflow.org">TensorFlow Playground</a></em></p>
 <p>ReLU is often favored over sigmoid and tanh because it can be computed faster and avoids the so-called "vanishing gradient" problem (vanishing gradients occur when small weight updates during training make the model stop learning). There is, however, a <a href="https://developers.google.com/machine-learning/crash-course/neural-networks/backpropagation#dead_relu_units">"Dead ReLU Units" problem</a>.</p>
 <p>Now our model creates and weighs certain combinations of inputs (much more abstract equivalents of a feature cross we would add manually in our simple model). Before moving on to the next layer, the model applies an activation function.</p>
@@ -68,12 +70,12 @@
                 <div class="clear"></div>
 
                 <div class="info">
-                    <a href="http://127.0.0.1:8000/why-do-we-need-neural-networks-with-hidden-layers.html">posted at 13:00</a>
-                    &nbsp;&middot;&nbsp;<a href="http://127.0.0.1:8000/category/machine-learning.html" rel="tag">Machine learning</a>
+                    <a href="https://lemontree210.github.io/why-do-we-need-neural-networks-with-hidden-layers.html">posted at 13:00</a>
+                    &nbsp;&middot;&nbsp;<a href="https://lemontree210.github.io/category/machine-learning.html" rel="tag">Machine learning</a>
                     &nbsp;&middot;
-                    &nbsp;<a href="http://127.0.0.1:8000/tag/machine-learning.html" class="tags">Machine learning</a>
-                    &nbsp;<a href="http://127.0.0.1:8000/tag/neural-networks.html" class="tags">neural networks</a>
-                    &nbsp;<a href="http://127.0.0.1:8000/tag/activation-functions.html" class="tags">activation functions</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/machine-learning.html" class="tags">Machine learning</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/neural-networks.html" class="tags">neural networks</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/activation-functions.html" class="tags">activation functions</a>
                 </div>
             </article>
 

@@ -3,6 +3,7 @@ SITENAME = "Mitya's Self-Explanatory"
 SITEURL = "https://lemontree210.github.io"
 
 PATH = "content"
+OUTPUT_PATH = "docs"
 STATIC_PATHS = ["images"]
 THEME = "blue-penguin-dark"
 
