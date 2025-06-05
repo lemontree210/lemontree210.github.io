@@ -41,7 +41,9 @@ ReLU is often favored over sigmoid and tanh because it can be computed faster an
 
 Now our model creates and weighs certain combinations of inputs (much more abstract equivalents of a feature cross we would add manually in our simple model). Before moving on to the next layer, the model applies an activation function.
 
-In the process, the model warps and reshapes our space of feature values, sometimes even tearing it apart (scientifically speaking, breaking its topology). Our model strives to create a certain multidimensional space where features will all be separated by a "straight line", i.e. where the equation finally becomes linear.
+In the process, the model warps and reshapes our space of feature values, sometimes even tearing it apart (scientifically speaking, breaking its topology). Our model strives to create a certain multidimensional space where data points will all be separated by a "straight line", i.e. where the equation finally becomes linear.
+
+This means that in the picture above, where we see some sort of parallelogram, it's actually a hyperplane in a higher-dimensional space.
 
 <img width="40%" src="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/spiral.1-2.2-2-2-2-2-2.gif">
 _The visualization comes from [this blog post](https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/)_
