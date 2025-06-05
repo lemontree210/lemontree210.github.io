@@ -1,6 +1,6 @@
 AUTHOR = 'Dmitry Kolomatskiy'
 SITENAME = "Mitya's Self-Explanatory"
-SITEURL = "https://lemontree210.github.io"
+SITEURL = ""
 
 PATH = "content"
 OUTPUT_PATH = "docs"
