@@ -22,7 +22,7 @@ But feature crosses aren't enough for complex dependencies.
 ![Feature cross]({static}/images/featurecross2.jpg "Feature cross")
 _Here, a feature cross doesn't work well. Screenshot from [TensorFlow Playground](https://playground.tensorflow.org)_
 
-Just like we previously asked the model to figure out the weights and bias on its own, we can now ask it to create abstract combinations of features on its own as well and see if it helps separate features.
+Just like we previously asked the model to figure out the weights and bias on its own, we can now ask it to create abstract combinations of features on its own as well and see if it helps separate data points.
 
 This process can't be done with a simple model layout of one input layer and one output layer. So we create "hidden" layers, in which our model creates abstract interactions between inputs, adjusts their weights, adds bias, feeds them to subsequent hidden layers where new abstractions are created, and so on.
 
