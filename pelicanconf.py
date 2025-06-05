@@ -3,6 +3,7 @@ SITENAME = "Mitya's Self-Explanatory"
 SITEURL = "http://127.0.0.1:8000"
 
 PATH = "content"
+STATIC_PATHS = ["images"]
 THEME = "blue-penguin-dark"
 
 TIMEZONE = 'Europe/Moscow'
