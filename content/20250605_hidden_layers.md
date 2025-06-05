@@ -45,10 +45,11 @@ In the process, the model warps and reshapes our space of feature values, someti
 
 This means that in the picture above, where we see some sort of parallelogram, it's actually a hyperplane in a higher-dimensional space.
 
-<img width="40%" src="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/spiral.1-2.2-2-2-2-2-2.gif">
-_The visualization comes from [this blog post](https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/)_
+Here is a beautiful visualization from [this blog post](https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/), where two spirals are getting separated from each other:
 
-(My phrase "warps and reshapes" could imply some sort of distortion. However, according to the manifold hypothesis, it's the other way round: a neural network "unfolds" a "manifold", which is a lower-dimensional structure embedded in high-dimensional space, like a crumpled paper in 3D, to produce a linearly separable representation.)
+<img width="40%" src="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/spiral.1-2.2-2-2-2-2-2.gif">
+
+(My phrase "warps and reshapes" used above could imply some sort of distortion. However, according to the manifold hypothesis, it's the other way round: a neural network "unfolds" a "manifold", which is a lower-dimensional structure embedded in high-dimensional space, like a crumpled paper in 3D, to produce a linearly separable representation.)
 
 When, after much learning, this multidimensional space is created, a task-dependent activation function (e.g. sigmoid for binary classification, softmax for multi-class) is applied one last time. It converts the linear separation in the transformed space into a probabilistic output, ensuring the output is interpretable. This is the prediction we asked for.
 
