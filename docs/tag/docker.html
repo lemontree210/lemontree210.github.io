@@ -87,22 +87,18 @@ improving security.</p>
 <div class="highlight"><pre><span></span><code><span class="w">    </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>nginx<span class="w"> </span>
 <span class="w">    </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>nginx<span class="w"> </span>
 <span class="w">    </span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>nginx
-<span class="w"> </span><span class="sb">```</span>
+</code></pre></div>
 
-&gt;<span class="w"> </span>Make<span class="w"> </span>sure<span class="w"> </span>you<span class="w"> </span>keep<span class="w"> </span>nginx<span class="w"> </span>and<span class="w"> </span>Docker<span class="w"> </span>up<span class="w"> </span>to<span class="w"> </span>date<span class="w"> </span><span class="k">in</span><span class="w"> </span>your<span class="w"> </span>system.
-
-<span class="c1">### Set up a certificate for your domain</span>
-
-This<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>investment<span class="w"> </span>bit<span class="w"> </span>:<span class="o">)</span>
-n8n<span class="w"> </span>will<span class="w"> </span>rightfully<span class="w"> </span>complain<span class="w"> </span>without<span class="w"> </span>https,<span class="w"> </span>so<span class="w"> </span>we<span class="w"> </span>need<span class="w"> </span>an<span class="w"> </span>SSL<span class="w"> </span>certificate.
-
-The<span class="w"> </span>investment<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>certificate<span class="w"> </span>as<span class="w"> </span>it<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>generated<span class="w"> </span><span class="k">for</span><span class="w"> </span>free,<span class="w"> </span>but<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>domain<span class="w"> </span>name
-you<span class="w"> </span>will<span class="w"> </span>generate<span class="w"> </span>the<span class="w"> </span>certificate<span class="w"> </span><span class="k">for</span>.
-
-So,<span class="w"> </span>once<span class="w"> </span>the<span class="w"> </span>domain<span class="w"> </span>name<span class="w"> </span>is<span class="w"> </span><span class="nb">set</span><span class="w"> </span>up<span class="w"> </span>to<span class="w"> </span>forward<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>server,<span class="w"> </span>let<span class="s1">&#39;s generate a Let&#39;</span>s<span class="w"> </span>Encrypt<span class="w"> </span>certificate.
-
-<span class="sb">```</span>bash
-<span class="w">    </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>certbot<span class="w"> </span>python3-certbot-nginx<span class="w"> </span>
+<blockquote>
+<p>Make sure you keep nginx and Docker up to date in your system.</p>
+</blockquote>
+<h3>Set up a certificate for your domain</h3>
+<p>This is the investment bit :)
+n8n will rightfully complain without https, so we need an SSL certificate.</p>
+<p>The investment is not in a certificate as it can be generated for free, but in a domain name
+you will generate the certificate for.</p>
+<p>So, once the domain name is set up to forward to your server, let's generate a Let's Encrypt certificate.</p>
+<div class="highlight"><pre><span></span><code><span class="w">    </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>certbot<span class="w"> </span>python3-certbot-nginx<span class="w"> </span>
 <span class="w">    </span>sudo<span class="w"> </span>certbot<span class="w"> </span>--nginx<span class="w"> </span>-d<span class="w"> </span>your-domain.com<span class="w"> </span>-d<span class="w"> </span>www.your-domain.com
 </code></pre></div>
 

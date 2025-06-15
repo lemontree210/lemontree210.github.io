@@ -51,22 +51,18 @@ improving security.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;    &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;nginx&lt;span class="w"&gt; &lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;systemctl&lt;span class="w"&gt; &lt;/span&gt;start&lt;span class="w"&gt; &lt;/span&gt;nginx&lt;span class="w"&gt; &lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;systemctl&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;enable&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;nginx
-&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="sb"&gt;```&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&amp;gt;&lt;span class="w"&gt; &lt;/span&gt;Make&lt;span class="w"&gt; &lt;/span&gt;sure&lt;span class="w"&gt; &lt;/span&gt;you&lt;span class="w"&gt; &lt;/span&gt;keep&lt;span class="w"&gt; &lt;/span&gt;nginx&lt;span class="w"&gt; &lt;/span&gt;and&lt;span class="w"&gt; &lt;/span&gt;Docker&lt;span class="w"&gt; &lt;/span&gt;up&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;date&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;your&lt;span class="w"&gt; &lt;/span&gt;system.
-
-&lt;span class="c1"&gt;### Set up a certificate for your domain&lt;/span&gt;
-
-This&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;investment&lt;span class="w"&gt; &lt;/span&gt;bit&lt;span class="w"&gt; &lt;/span&gt;:&lt;span class="o"&gt;)&lt;/span&gt;
-n8n&lt;span class="w"&gt; &lt;/span&gt;will&lt;span class="w"&gt; &lt;/span&gt;rightfully&lt;span class="w"&gt; &lt;/span&gt;complain&lt;span class="w"&gt; &lt;/span&gt;without&lt;span class="w"&gt; &lt;/span&gt;https,&lt;span class="w"&gt; &lt;/span&gt;so&lt;span class="w"&gt; &lt;/span&gt;we&lt;span class="w"&gt; &lt;/span&gt;need&lt;span class="w"&gt; &lt;/span&gt;an&lt;span class="w"&gt; &lt;/span&gt;SSL&lt;span class="w"&gt; &lt;/span&gt;certificate.
-
-The&lt;span class="w"&gt; &lt;/span&gt;investment&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;not&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;certificate&lt;span class="w"&gt; &lt;/span&gt;as&lt;span class="w"&gt; &lt;/span&gt;it&lt;span class="w"&gt; &lt;/span&gt;can&lt;span class="w"&gt; &lt;/span&gt;be&lt;span class="w"&gt; &lt;/span&gt;generated&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;free,&lt;span class="w"&gt; &lt;/span&gt;but&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;in&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;a&lt;span class="w"&gt; &lt;/span&gt;domain&lt;span class="w"&gt; &lt;/span&gt;name
-you&lt;span class="w"&gt; &lt;/span&gt;will&lt;span class="w"&gt; &lt;/span&gt;generate&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;certificate&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="k"&gt;for&lt;/span&gt;.
-
-So,&lt;span class="w"&gt; &lt;/span&gt;once&lt;span class="w"&gt; &lt;/span&gt;the&lt;span class="w"&gt; &lt;/span&gt;domain&lt;span class="w"&gt; &lt;/span&gt;name&lt;span class="w"&gt; &lt;/span&gt;is&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="nb"&gt;set&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;up&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;forward&lt;span class="w"&gt; &lt;/span&gt;to&lt;span class="w"&gt; &lt;/span&gt;your&lt;span class="w"&gt; &lt;/span&gt;server,&lt;span class="w"&gt; &lt;/span&gt;let&lt;span class="s1"&gt;&amp;#39;s generate a Let&amp;#39;&lt;/span&gt;s&lt;span class="w"&gt; &lt;/span&gt;Encrypt&lt;span class="w"&gt; &lt;/span&gt;certificate.
-
-&lt;span class="sb"&gt;```&lt;/span&gt;bash
-&lt;span class="w"&gt;    &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;certbot&lt;span class="w"&gt; &lt;/span&gt;python3-certbot-nginx&lt;span class="w"&gt; &lt;/span&gt;
+&lt;blockquote&gt;
+&lt;p&gt;Make sure you keep nginx and Docker up to date in your system.&lt;/p&gt;
+&lt;/blockquote&gt;
+&lt;h3&gt;Set up a certificate for your domain&lt;/h3&gt;
+&lt;p&gt;This is the investment bit :)
+n8n will rightfully complain without https, so we need an SSL certificate.&lt;/p&gt;
+&lt;p&gt;The investment is not in a certificate as it can be generated for free, but in a domain name
+you will generate the certificate for.&lt;/p&gt;
+&lt;p&gt;So, once the domain name is set up to forward to your server, let's generate a Let's Encrypt certificate.&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;    &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;certbot&lt;span class="w"&gt; &lt;/span&gt;python3-certbot-nginx&lt;span class="w"&gt; &lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;certbot&lt;span class="w"&gt; &lt;/span&gt;--nginx&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;your-domain.com&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;www.your-domain.com
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
