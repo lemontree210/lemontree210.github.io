@@ -4,10 +4,11 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <title>Mitya's Self-Explanatory</title>
-    <link rel="shortcut icon" type="image/png" href="/favicon.png">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
-    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <link rel="shortcut icon" type="image/png" href="https://lemontree210.github.io/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="https://lemontree210.github.io/favicon.ico">
+    <link href="https://lemontree210.github.io/feeds/all.atom.xml" type="application/atom+xml" rel="alternate" title="Mitya's Self-Explanatory Full Atom Feed" />
+    <link rel="stylesheet" href="https://lemontree210.github.io/theme/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="https://lemontree210.github.io/theme/css/pygments.css" type="text/css" />
     <meta name="generator" content="Pelican" />
     <meta name="description" content="" />
     <meta name="author" content="Dmitry Kolomatskiy" />
@@ -16,21 +17,227 @@
     <header>
         <nav style="overflow: hidden;">
             <ul>
-                <li class="selected"><a href="/">Home</a></li>
+                <li class="selected"><a href="https://lemontree210.github.io/">Home</a></li>
             </ul>
         </nav>
         <div class="header_box" style="height: 50px">
-        <h1><a href="/">
+        <h1><a href="https://lemontree210.github.io/">
             <image src='' class="avatar" width="50px" /><span class="site_title">Mitya's Self-Explanatory</span>
             </a></h1></div>
         </div>
     </header>
     <div id="wrapper">
-        <div id="content">            <h4 class="date">июн 05, 2025</h4>
+        <div id="content">            <h4 class="date">июн 15, 2025</h4>
 
             <article class="post">
                 <h2 class="title">
-                    <a href="/why-do-we-need-neural-networks-with-hidden-layers.html" rel="bookmark" title="Permanent Link to &quot;Why Do We Need Neural Networks with Hidden Layers?&quot;">Why Do We Need Neural Networks with Hidden Layers?</a>
+                    <a href="https://lemontree210.github.io/hosting-an-app-in-a-docker-container-what-the-heck-is-a-reverse-proxy.html" rel="bookmark" title="Permanent Link to &quot;Hosting an app in a Docker container. What the heck is a reverse proxy?&quot;">Hosting an app in a Docker container. What the heck is a reverse proxy?</a>
+                </h2>
+
+                
+                
+
+                <p>One of my goals recently has been to try and automate some of my PC routines.
+I didn't think it was possible at all, but then <a href="https://www.linkedin.com/in/lena-shakurova/">Lena Shakurova</a>
+wrote/spoke about <a href="https://n8n.io/">n8n.io</a>, so I decided to try it.</p>
+<p>Now, n8n.io has no free plan as of June 2025, just a short trial period of a paid plan.
+But that's if you use their cloud to store your project. But you can run a self-hosted version for free.
+(Well, you still need some investment, but we'll get to that later.)</p>
+<h2>What n8n already has in their docs when it comes to deployment</h2>
+<ul>
+<li>There are some instructions on server setup listed in the
+<a href="https://docs.n8n.io/hosting/installation/server-setups/">official docs</a>.</li>
+<li>There is a <a href="https://github.com/n8n-io/self-hosted-ai-starter-kit">repo</a> where you can download a self-hosted AI starter kit.</li>
+</ul>
+<p>I found no simple instructions for setting up n8n without docker compose, that I'm not yet fully
+familiar with, and on just some random web server, not Digital Ocean or AWS.</p>
+<p>So I thought that I would figure it out, learning basics of Docker along the way
+and refreshing my memory of what a reverse proxy actually is because I'm going to need it.</p>
+<h2>Important concepts</h2>
+<p>Ok, here's what I needed to learn/know/understand in order to run n8n on my own server:</p>
+<h3>Docker</h3>
+<p><a href="https://www.linkedin.com/in/nana-janashia/">Nana Janashia</a> made an 
+<a href="https://www.youtube.com/watch?v=pg19Z8LL06w">incredibly helpful intro</a> to Docker
+(just take a moment to look at the view count, it's more than many music and standup videos!).
+There was all I needed to know: basically, a Docker container is a thing that uses your
+operating system (Linux for vast majority of servers) and puts an application layer on top of it.
+You have to get a Docker <em>image</em>, which contains the setup of this application layer, and create
+a <em>container</em> where it will be installed and run.</p>
+<h3>Nginx as a reverse proxy</h3>
+<p>I had already known something about nginx. Just in case: it's a web server, i.e. a program that
+runs on the remote server and answers HTTP(S) requests. I know that there are configuration files
+you have to create in the right places. But what was also important to refresh in my memory was
+that nginx acts as a <em>reverse proxy</em>, and this is relevant for serving n8n (or any other app?).</p>
+<p>A "normal" proxy is what you could use on your own computer to access some web resources. It sits 
+between your computer and the web server you're trying to access. So, a reverse proxy does
+the thing in the opposite direction: it receives a request on some port that is exposed to the
+internet, and then forwards it to (in my case) an app that is listening to some other port.
+That other port is not exposed to the internet. This way nginx handles all incoming requests,
+improving security.</p>
+<h2>Setting up</h2>
+<h3>Install and start Docker and NGINX</h3>
+<div class="highlight"><pre><span></span><code><span class="w">    </span>sudo<span class="w"> </span>apt<span class="w"> </span>update
+<span class="w">    </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>docker.io
+<span class="w">    </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>docker
+<span class="w">    </span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>docker
+<span class="w">    </span>sudo<span class="w"> </span>usermod<span class="w"> </span>-aG<span class="w"> </span>docker<span class="w"> </span><span class="nv">$USER</span>
+</code></pre></div>
+
+<div class="highlight"><pre><span></span><code><span class="w">    </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>nginx<span class="w"> </span>
+<span class="w">    </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>start<span class="w"> </span>nginx<span class="w"> </span>
+<span class="w">    </span>sudo<span class="w"> </span>systemctl<span class="w"> </span><span class="nb">enable</span><span class="w"> </span>nginx
+<span class="w"> </span><span class="sb">```</span>
+
+&gt;<span class="w"> </span>Make<span class="w"> </span>sure<span class="w"> </span>you<span class="w"> </span>keep<span class="w"> </span>nginx<span class="w"> </span>and<span class="w"> </span>Docker<span class="w"> </span>up<span class="w"> </span>to<span class="w"> </span>date<span class="w"> </span><span class="k">in</span><span class="w"> </span>your<span class="w"> </span>system.
+
+<span class="c1">### Set up a certificate for your domain</span>
+
+This<span class="w"> </span>is<span class="w"> </span>the<span class="w"> </span>investment<span class="w"> </span>bit<span class="w"> </span>:<span class="o">)</span>
+n8n<span class="w"> </span>will<span class="w"> </span>rightfully<span class="w"> </span>complain<span class="w"> </span>without<span class="w"> </span>https,<span class="w"> </span>so<span class="w"> </span>we<span class="w"> </span>need<span class="w"> </span>an<span class="w"> </span>SSL<span class="w"> </span>certificate.
+
+The<span class="w"> </span>investment<span class="w"> </span>is<span class="w"> </span>not<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>certificate<span class="w"> </span>as<span class="w"> </span>it<span class="w"> </span>can<span class="w"> </span>be<span class="w"> </span>generated<span class="w"> </span><span class="k">for</span><span class="w"> </span>free,<span class="w"> </span>but<span class="w"> </span><span class="k">in</span><span class="w"> </span>a<span class="w"> </span>domain<span class="w"> </span>name
+you<span class="w"> </span>will<span class="w"> </span>generate<span class="w"> </span>the<span class="w"> </span>certificate<span class="w"> </span><span class="k">for</span>.
+
+So,<span class="w"> </span>once<span class="w"> </span>the<span class="w"> </span>domain<span class="w"> </span>name<span class="w"> </span>is<span class="w"> </span><span class="nb">set</span><span class="w"> </span>up<span class="w"> </span>to<span class="w"> </span>forward<span class="w"> </span>to<span class="w"> </span>your<span class="w"> </span>server,<span class="w"> </span>let<span class="s1">&#39;s generate a Let&#39;</span>s<span class="w"> </span>Encrypt<span class="w"> </span>certificate.
+
+<span class="sb">```</span>bash
+<span class="w">    </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>certbot<span class="w"> </span>python3-certbot-nginx<span class="w"> </span>
+<span class="w">    </span>sudo<span class="w"> </span>certbot<span class="w"> </span>--nginx<span class="w"> </span>-d<span class="w"> </span>your-domain.com<span class="w"> </span>-d<span class="w"> </span>www.your-domain.com
+</code></pre></div>
+
+<p>Certbot will update your NGINX config to use HTTPS and redirect HTTP to HTTPS.</p>
+<h3>Create a Docker Volume for n8n Data</h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>docker<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>n8n_data
+</code></pre></div>
+
+<p>n8n will use it as persistent storage so that your data remains intact
+even if you delete the container</p>
+<h3>Start the n8n Container</h3>
+<p>As Nana Janashia explains in <a href="https://www.youtube.com/watch?v=pg19Z8LL06w">her Docker crash course</a>,
+you can either first <em>pull</em> the image from a remote registry and then <em>run</em> it, but you can just
+say <code>docker run</code> and, if there is no local image, it will pull it for you.
+Also, you don't have to specify where to pull it from, because n8n.io has images uploaded
+to the official registry, <a href="https://hub.docker.com/r/n8nio/n8n">Docker Hub</a>.</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--restart<span class="w"> </span>unless-stopped<span class="w"> </span>--name<span class="w"> </span>n8n<span class="w"> </span>-p<span class="w"> </span><span class="m">5678</span>:5678<span class="w"> </span>-v<span class="w"> </span>n8n_data:/home/node/.n8n<span class="w"> </span>docker.n8n.io/n8nio/n8n:stable
+</code></pre></div>
+
+<p>Let's break down the parameters of <code>docker run</code>:</p>
+<ul>
+<li><code>-d</code>: Run container in detached mode (in the background)</li>
+<li><code>--restart unless-stopped</code>: Automatically restart the container unless explicitly stopped</li>
+<li><code>--name n8n</code>: Name the container "n8n" for easier reference. It's much easier to use the name, not the ID.</li>
+<li><code>-p 5678:5678</code>: Map port 5678 on the host to port 5678 in the container. As Nana says, it's good practice to preserve the port number that the app is using by default. Note that when I say "map port 5678" on the host, I mean <code>localhost</code> on my webserver. It will be accessed internally by nginx, not from the outside using browsers!</li>
+<li><code>-v n8n_data:/home/node/.n8n</code>: Attach the volume for data persistence that we created earlier.</li>
+<li><code>docker.n8n.io/n8nio/n8n:stable</code>: The Docker image to use (official n8n image from Docker Hub). I'm using the tag <code>stable</code> here, you can use a different one.</li>
+</ul>
+<h3>Configure NGINX as a Reverse Proxy</h3>
+<p>Edit or create the NGINX configuration file (you can put anything instead of <code>n8n</code>, of course):</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/nginx/sites-available/n8n
+</code></pre></div>
+
+<p>Here are directives that must be in the configuration file:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="err">listen</span><span class="w"> </span><span class="err">443</span><span class="w"> </span><span class="err">ssl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">listen</span><span class="w"> </span><span class="cp">[</span><span class="p">::</span><span class="cp">]</span><span class="p">:</span><span class="mi">443</span><span class="w"> </span><span class="n">ssl</span><span class="p">;</span>
+<span class="w">    </span><span class="err">server_name</span><span class="w"> </span><span class="err">your-domain.com</span><span class="w"> </span><span class="err">www.your-domain.com</span><span class="p">;</span>
+
+<span class="w">    </span><span class="err">ssl_certificate</span><span class="w"> </span><span class="err">/etc/letsencrypt/live/your-domain.com/fullchain.pem</span><span class="p">;</span>
+<span class="w">    </span><span class="err">ssl_certificate_key</span><span class="w"> </span><span class="err">/etc/letsencrypt/live/your-domain.com/privkey.pem</span><span class="p">;</span>
+<span class="w">    </span><span class="err">include</span><span class="w"> </span><span class="err">/etc/letsencrypt/options-ssl-nginx.conf</span><span class="p">;</span>
+<span class="w">    </span><span class="err">ssl_dhparam</span><span class="w"> </span><span class="err">/etc/letsencrypt/ssl-dhparams.pem</span><span class="p">;</span>
+
+<span class="w">    </span><span class="err">location</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="err">proxy_pass</span><span class="w"> </span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">:</span><span class="mi">5678</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_set_header</span><span class="w"> </span><span class="err">Host</span><span class="w"> </span><span class="err">$host</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_set_header</span><span class="w"> </span><span class="err">X-Forwarded-For</span><span class="w"> </span><span class="err">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_set_header</span><span class="w"> </span><span class="err">X-Forwarded-Proto</span><span class="w"> </span><span class="err">$scheme</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="err">}</span>
+</code></pre></div>
+
+<p>Note that the <code>location /</code> block is where we set up this reverse proxying. 
+<code>proxy_pass</code> tells nginx to forward incoming requests that came to port <code>443</code>
+(standard port for https) to port <code>5678</code> on <code>localhost</code>.
+Which is the port that n8n is listening to.</p>
+<h3>Enable the NGINX Configuration</h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/nginx/sites-available/n8n<span class="w"> </span>/etc/nginx/sites-enabled/
+</code></pre></div>
+
+<p>Now this part confused me a bit, but after a while it makes sense.
+You create a site configuration in <code>sites-available</code> and it just sits there.
+But when you decide to actually use this site, you <em>enable</em> it by creating a symlink
+(like a shortcut, so you don't the file itself) in <code>sites-enabled</code>.
+nginx tries to serve only sites that are <em>enabled</em>, not all sites that are simply <em>available</em>.</p>
+<h3>Check NGINX Configuration</h3>
+<p>This will return errors if something is wrong with the config file:</p>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>nginx<span class="w"> </span>-t
+</code></pre></div>
+
+<h3>Open Port 443 in the Firewall</h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>ufw<span class="w"> </span>allow<span class="w"> </span><span class="m">443</span>/tcp
+<span class="w">  </span>sudo<span class="w"> </span>ufw<span class="w"> </span><span class="nb">enable</span>
+<span class="w">  </span>sudo<span class="w"> </span>ufw<span class="w"> </span>status
+</code></pre></div>
+
+<p>Remember that we do <strong>not</strong> open port <code>5678</code> because it's for internal use.</p>
+<h3>Restart NGINX</h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>restart<span class="w"> </span>nginx<span class="sb">`</span>
+</code></pre></div>
+
+<h3>Test Your Setup</h3>
+<p>Access n8n via your domain. You should see the n8n login or setup page.</p>
+<h2>Diagnostics: in case something doesn't work</h2>
+<h3>Check which processes are listening on ports <code>443</code> and <code>5678</code></h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>ss<span class="w"> </span>-tulnp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">443</span>
+<span class="w">  </span>sudo<span class="w"> </span>ss<span class="w"> </span>-tulnp<span class="w"> </span><span class="p">|</span><span class="w"> </span>grep<span class="w"> </span><span class="m">5678</span>
+</code></pre></div>
+
+<p>It should say "nginx" for port 443 and "docker-proxy" (that's n8n) for port 5678.</p>
+<h3>Check  NGINX configuration for errors</h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>nginx<span class="w"> </span>-t
+</code></pre></div>
+
+<p>Tests NGINX configuration syntax.</p>
+<h3>Check  NGINX service status</h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>systemctl<span class="w"> </span>status<span class="w"> </span>nginx
+</code></pre></div>
+
+<p>Shows if NGINX is running and recent logs.</p>
+<h3>Check NGINX error messages in real time</h3>
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>tail<span class="w"> </span>-f<span class="w"> </span>/var/log/nginx/error.log
+</code></pre></div>
+
+<h3>Check running Docker containers</h3>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>docker<span class="w"> </span>ps
+</code></pre></div>
+
+<h3>Check Docker container logs</h3>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>docker<span class="w"> </span>logs<span class="w"> </span>n8n
+</code></pre></div>
+
+<h3>Check  firewall rules</h3>
+<div class="highlight"><pre><span></span><code>sudo<span class="w"> </span>ufw<span class="w"> </span>status
+</code></pre></div>
+
+<p>Port 443 should be open.</p>
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="https://lemontree210.github.io/hosting-an-app-in-a-docker-container-what-the-heck-is-a-reverse-proxy.html">posted at 11:00</a>
+                    &nbsp;&middot;&nbsp;<a href="https://lemontree210.github.io/category/deployment.html" rel="tag">Deployment</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="https://lemontree210.github.io/tag/n8n.html" class="tags">n8n</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/docker.html" class="tags">Docker</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/nginx.html" class="tags">nginx</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/deployment.html" class="tags">deployment</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/reverse-proxy.html" class="tags">reverse proxy</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/web-development.html" class="tags">web development</a>
+                </div>
+            </article>            <h4 class="date">июн 05, 2025</h4>
+
+            <article class="post">
+                <h2 class="title">
+                    <a href="https://lemontree210.github.io/why-do-we-need-neural-networks-with-hidden-layers.html" rel="bookmark" title="Permanent Link to &quot;Why Do We Need Neural Networks with Hidden Layers?&quot;">Why Do We Need Neural Networks with Hidden Layers?</a>
                 </h2>
 
                 
@@ -45,10 +252,10 @@
 <p><img src="https://www.oreilly.com/api/v2/epubs/9781788830577/files/assets/c608dc6d-58f1-4548-b5d7-f3ba22fe1709.png">
 <em>Source: <a href="https://www.oreilly.com/library/view/machine-learning-quick/9781788830577/69e8b23d-701f-4be3-9949-373b98962b43.xhtml">O'Reilly</a></em></p>
 <p>To try and fix this, we can produce <em>a feature cross</em>, for example multiplying [square of] one feature by [square of] another (it is possible, since all features, even categorical ones, are represented as numbers). We still have a linear equation, but the line now looks curvy (or it's a hyperbolic line, so looks like two separate curvy lines). Since the equation is still linear, we can imagine that in a space with more dimensions, there is a perfectly flat plane or hyperplane separating two original features. We can try and create feature crosses by hand, adjusting weights now not only for original features, but for their crosses as well.</p>
-<p><img alt="Feature cross" src="/images/featurecross1.jpg" title="Feature cross">
+<p><img alt="Feature cross" src="https://lemontree210.github.io/images/featurecross1.jpg" title="Feature cross">
 <em>This feature cross works well. Screenshot from <a href="https://playground.tensorflow.org">TensorFlow Playground</a></em></p>
 <p>But feature crosses aren't enough for complex dependencies.</p>
-<p><img alt="Feature cross" src="/images/featurecross2.jpg" title="Feature cross">
+<p><img alt="Feature cross" src="https://lemontree210.github.io/images/featurecross2.jpg" title="Feature cross">
 <em>Here, a feature cross doesn't work well. Screenshot from <a href="https://playground.tensorflow.org">TensorFlow Playground</a></em></p>
 <p>Just like we previously asked the model to figure out the weights and bias on its own, we can now ask it to create abstract combinations of features on its own as well and see if it helps separate data points.</p>
 <p>This process can't be done with a simple model layout of one input layer and one output layer. So we create "hidden" layers, in which our model creates abstract interactions between inputs, adjusts their weights, adds bias, feeds them to subsequent hidden layers where new abstractions are created, and so on.</p>
@@ -56,7 +263,7 @@
 <p>Okay, so we have added some layers. Despite our space of features now being multidimensional and transformations looking very complex, without an additional operation its predictions will only work with linear dependencies between features.</p>
 <p>To address this problem, at each layer we introduce a function called <em><a href="https://en.wikipedia.org/wiki/Activation_function">activation function</a></em>. The model takes the bias summed with all products of values and weights and feeds them to this function. If the activation function is non-linear, our model gets the ability to work with non-linear dependencies.</p>
 <p>Popular examples of activation functions are Sigmoid (more correctly, <a href="https://en.wikipedia.org/wiki/Logistic_function">logistic</a>, since "sigmoid" is too general a term; produces values between <code>0</code> and <code>1</code>), <a href="https://www.geeksforgeeks.org/tanh-activation-in-neural-network/">tanh</a> (short for "hyperbolic tangent"; also an S-shaped function, like sigmoid, and produces values between <code>-1</code> and <code>1</code>) and <a href="https://en.wikipedia.org/wiki/Rectifier_(neural_networks)">ReLU</a> (short for "Rectified Linear Unit", produces <code>0</code> for negative values and preserves original value for positive ones). Usually, the same activation function is applied to all hidden layers, then a task-specific function (could be same, could be different) is applied to outputs of the last hidden layer to produce the final output of the model.</p>
-<p><img alt="ReLU" src="/images/relu.jpg" title="Problem solved with one hidden layer and ReLU activation function">
+<p><img alt="ReLU" src="https://lemontree210.github.io/images/relu.jpg" title="Problem solved with one hidden layer and ReLU activation function">
 <em>Problem solved with one hidden layer and ReLU activation function. Screenshot from <a href="https://playground.tensorflow.org">TensorFlow Playground</a></em></p>
 <p>ReLU is often favored over sigmoid and tanh because it can be computed faster and avoids the so-called "vanishing gradient" problem (vanishing gradients occur when small weight updates during training make the model stop learning). There is, however, a <a href="https://developers.google.com/machine-learning/crash-course/neural-networks/backpropagation#dead_relu_units">"Dead ReLU Units" problem</a>.</p>
 <p>Now our model creates and weighs certain combinations of inputs (much more abstract equivalents of a feature cross we would add manually in our simple model). Before moving on to the next layer, the model applies an activation function.</p>
@@ -71,12 +278,12 @@
                 <div class="clear"></div>
 
                 <div class="info">
-                    <a href="/why-do-we-need-neural-networks-with-hidden-layers.html">posted at 13:00</a>
-                    &nbsp;&middot;&nbsp;<a href="/category/machine-learning.html" rel="tag">Machine learning</a>
+                    <a href="https://lemontree210.github.io/why-do-we-need-neural-networks-with-hidden-layers.html">posted at 13:00</a>
+                    &nbsp;&middot;&nbsp;<a href="https://lemontree210.github.io/category/machine-learning.html" rel="tag">Machine learning</a>
                     &nbsp;&middot;
-                    &nbsp;<a href="/tag/machine-learning.html" class="tags">Machine learning</a>
-                    &nbsp;<a href="/tag/neural-networks.html" class="tags">neural networks</a>
-                    &nbsp;<a href="/tag/activation-functions.html" class="tags">activation functions</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/machine-learning.html" class="tags">Machine learning</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/neural-networks.html" class="tags">neural networks</a>
+                    &nbsp;<a href="https://lemontree210.github.io/tag/activation-functions.html" class="tags">activation functions</a>
                 </div>
             </article>
 
@@ -86,6 +293,8 @@
                 <a href="https://github.com/tcarwash/blue-penguin-dark">Blue Penguin Dark</a> Theme
                 &middot;
                 Powered by <a href="http://getpelican.com">Pelican</a>
+                &middot;
+                <a href="https://lemontree210.github.io/feeds/all.atom.xml" rel="alternate">Atom Feed</a>
             </footer>
         </div>
         <div class="clear"></div>
