@@ -15,6 +15,7 @@ DATE_FORMATS = {
     'en': '%B %-d, %Y',        # "June 5, 2025"
     'ru': '%-d %B %Y г.',      # "5 июня 2025 г."
 }
+LOCALE = ('en_US',)
 
 
 # Feed generation is usually not desired when developing
