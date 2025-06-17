@@ -37,43 +37,27 @@
                 
                 
 
-                <p>One of my goals recently has been to try and automate some of my PC routines.
-I didn't think it was possible at all, but then <a href="https://www.linkedin.com/in/lena-shakurova/">Lena Shakurova</a>
-wrote/spoke about <a href="https://n8n.io/">n8n.io</a>, so I decided to try it.</p>
-<p>Now, n8n.io has no free plan as of June 2025, just a short trial period of a paid plan.
-But that's if you use their cloud to store your project. But you can run a self-hosted version for free.
-(Well, you still need some investment, but we'll get to that later.)</p>
+                <p>One of my goals recently has been to try and automate some of my PC routines. I didn't think it was possible at all, but then <a href="https://www.linkedin.com/in/lena-shakurova/">Lena Shakurova</a> wrote/spoke about <a href="https://n8n.io/">n8n.io</a>, so I decided to try it.</p>
+<p>Now, n8n.io has no free plan as of June 2025, just a short trial period of a paid plan. But that's if you use their cloud to store your project.</p>
+<p>But you can run a self-hosted version for free. (Well, you still need some investment, but we'll get to that later.)</p>
 <h2>What n8n already has in their docs when it comes to deployment</h2>
 <ul>
 <li>There are some instructions on server setup listed in the
 <a href="https://docs.n8n.io/hosting/installation/server-setups/">official docs</a>.</li>
 <li>There is a <a href="https://github.com/n8n-io/self-hosted-ai-starter-kit">repo</a> where you can download a self-hosted AI starter kit.</li>
 </ul>
-<p>I found no simple instructions for setting up n8n without docker compose, that I'm not yet fully
-familiar with, and on just some random web server, not Digital Ocean or AWS.</p>
-<p>So I thought that I would figure it out, learning basics of Docker along the way
-and refreshing my memory of what a reverse proxy actually is because I'm going to need it.</p>
+<p>I found no simple instructions for setting up n8n without docker compose, that I'm not yet fully familiar with, and on just some random web server, not Digital Ocean or AWS.</p>
+<p>So I thought that I would figure it out, learning basics of Docker along the way and refreshing my memory of what a reverse proxy actually is because I'm going to need it.</p>
 <h2>Important concepts</h2>
 <p>Ok, here's what I needed to learn/know/understand in order to run n8n on my own server:</p>
 <h3>Docker</h3>
-<p><a href="https://www.linkedin.com/in/nana-janashia/">Nana Janashia</a> made an 
-<a href="https://www.youtube.com/watch?v=pg19Z8LL06w">incredibly helpful intro</a> to Docker
-(just take a moment to look at the view count, it's more than many music and standup videos!).
-There was all I needed to know: basically, a Docker container is a thing that uses your
-operating system (Linux for vast majority of servers) and puts an application layer on top of it.
-You have to get a Docker <em>image</em>, which contains the setup of this application layer, and create
-a <em>container</em> where it will be installed and run.</p>
+<p><a href="https://www.linkedin.com/in/nana-janashia/">Nana Janashia</a> made an <a href="https://www.youtube.com/watch?v=pg19Z8LL06w">incredibly helpful intro</a> to Docker (just take a moment to look at the view count, it's more than many music and standup videos!). There was all I needed to know: basically, a Docker container is a thing that uses your
+operating system (Linux for vast majority of servers) and puts an application layer on top of it. You have to get a Docker <em>image</em>, which contains the setup of this application layer, and create a <em>container</em> where it will be installed and run.</p>
 <h3>Nginx as a reverse proxy</h3>
-<p>I had already known something about nginx. Just in case: it's a web server, i.e. a program that
-runs on the remote server and answers HTTP(S) requests. I know that there are configuration files
-you have to create in the right places. But what was also important to refresh in my memory was
-that nginx acts as a <em>reverse proxy</em>, and this is relevant for serving n8n (or any other app?).</p>
-<p>A "normal" proxy is what you could use on your own computer to access some web resources. It sits 
-between your computer and the web server you're trying to access. So, a reverse proxy does
-the thing in the opposite direction: it receives a request on some port that is exposed to the
-internet, and then forwards it to (in my case) an app that is listening to some other port.
-That other port is not exposed to the internet. This way nginx handles all incoming requests,
-improving security.</p>
+<p>I had already known something about nginx. Just in case: it's a web server, i.e. a program that runs on the remote server and answers HTTP(S) requests. I know that there are configuration files
+you have to create in the right places. But what was also important to refresh in my memory was that nginx acts as a <em>reverse proxy</em>, and this is relevant for serving n8n (or any other app?).</p>
+<p>A "normal" proxy is what you could use on your own computer to access some web resources. It sits between your computer and the web server you're trying to access.</p>
+<p>A reverse proxy does the thing in the opposite direction: it receives a request on some port that is exposed to the internet, and then forwards it to (in my case) an app that is listening to some other port. That other port is not exposed to the internet. This way nginx handles all incoming requests, improving security.</p>
 <h2>Setting up</h2>
 <h3>Install and start Docker and NGINX</h3>
 <div class="highlight"><pre><span></span><code><span class="w">    </span>sudo<span class="w"> </span>apt<span class="w"> </span>update
@@ -90,10 +74,9 @@ improving security.</p>
 
 <p>Make sure you keep nginx and Docker up to date in your system.</p>
 <h3>Set up a certificate for your domain</h3>
-<p>This is the investment bit :)
-n8n will rightfully complain without https, so we need an SSL certificate.</p>
-<p>The investment is not in a certificate as it can be generated for free, but in a domain name
-you will generate the certificate for.</p>
+<p>This is the investment bit :) n8n will rightfully complain without https, so we need an SSL certificate.</p>
+<p>(Even if you ignore n8n's complaints, you won't be able to connect e.g. your Google drive for n8n to access your files unless HTTPS connection can be established.)</p>
+<p>The investment is not in a certificate as it can be generated for free, but in a domain name you will generate the certificate for.</p>
 <p>So, once the domain name is set up to forward to your server, let's generate a Let's Encrypt certificate.</p>
 <div class="highlight"><pre><span></span><code><span class="w">    </span>sudo<span class="w"> </span>apt<span class="w"> </span>install<span class="w"> </span>certbot<span class="w"> </span>python3-certbot-nginx<span class="w"> </span>
 <span class="w">    </span>sudo<span class="w"> </span>certbot<span class="w"> </span>--nginx<span class="w"> </span>-d<span class="w"> </span>your-domain.com<span class="w"> </span>-d<span class="w"> </span>www.your-domain.com
@@ -104,14 +87,9 @@ you will generate the certificate for.</p>
 <div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>docker<span class="w"> </span>volume<span class="w"> </span>create<span class="w"> </span>n8n_data
 </code></pre></div>
 
-<p>n8n will use it as persistent storage so that your data remains intact
-even if you delete the container</p>
+<p>n8n will use it as persistent storage so that your data remains intact even if you delete the container</p>
 <h3>Start the n8n Container</h3>
-<p>As Nana Janashia explains in <a href="https://www.youtube.com/watch?v=pg19Z8LL06w">her Docker crash course</a>,
-you can either first <em>pull</em> the image from a remote registry and then <em>run</em> it, but you can just
-say <code>docker run</code> and, if there is no local image, it will pull it for you.
-Also, you don't have to specify where to pull it from, because n8n.io has images uploaded
-to the official registry, <a href="https://hub.docker.com/r/n8nio/n8n">Docker Hub</a>.</p>
+<p>As Nana Janashia explains in <a href="https://www.youtube.com/watch?v=pg19Z8LL06w">her Docker crash course</a>, you can either first <em>pull</em> the image from a remote registry and then <em>run</em> it, but you can just say <code>docker run</code> and, if there is no local image, it will pull it for you. Also, you don't have to specify where to pull it from, because n8n.io has images uploaded to the official registry, <a href="https://hub.docker.com/r/n8nio/n8n">Docker Hub</a>.</p>
 <div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--restart<span class="w"> </span>unless-stopped<span class="w"> </span>--name<span class="w"> </span>n8n<span class="w"> </span>-p<span class="w"> </span><span class="m">5678</span>:5678<span class="w"> </span>-v<span class="w"> </span>n8n_data:/home/node/.n8n<span class="w"> </span>docker.n8n.io/n8nio/n8n:stable
 </code></pre></div>
 
@@ -129,7 +107,7 @@ to the official registry, <a href="https://hub.docker.com/r/n8nio/n8n">Docker Hu
 <div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>nano<span class="w"> </span>/etc/nginx/sites-available/n8n
 </code></pre></div>
 
-<p>Here are directives that must be in the configuration file:</p>
+<p>Standard directives that must be in the configuration file for nginx to forward requests to an app in a container are:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">server</span><span class="w"> </span><span class="p">{</span>
 <span class="w">    </span><span class="err">listen</span><span class="w"> </span><span class="err">443</span><span class="w"> </span><span class="err">ssl</span><span class="p">;</span>
 <span class="w">    </span><span class="n">listen</span><span class="w"> </span><span class="cp">[</span><span class="p">::</span><span class="cp">]</span><span class="p">:</span><span class="mi">443</span><span class="w"> </span><span class="n">ssl</span><span class="p">;</span>
@@ -153,15 +131,47 @@ to the official registry, <a href="https://hub.docker.com/r/n8nio/n8n">Docker Hu
 <code>proxy_pass</code> tells nginx to forward incoming requests that came to port <code>443</code>
 (standard port for https) to port <code>5678</code> on <code>localhost</code>.
 Which is the port that n8n is listening to.</p>
+<p>But for n8n it's not enough. In order for specifically n8n to work properly, we need more directives, otherwise the app will complain about not being able to connect to the server (see <a href="https://community.n8n.io/t/error-while-executing-workflow/28560/8">this discussion</a>).</p>
+<p>Here is my updated nginx config file:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">server</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="err">listen</span><span class="w"> </span><span class="err">443</span><span class="w"> </span><span class="err">ssl</span><span class="p">;</span>
+<span class="w">    </span><span class="n">listen</span><span class="w"> </span><span class="cp">[</span><span class="p">::</span><span class="cp">]</span><span class="p">:</span><span class="mi">443</span><span class="w"> </span><span class="n">ssl</span><span class="p">;</span>
+<span class="w">    </span><span class="err">server_name</span><span class="w"> </span><span class="err">your-domain.com</span><span class="w"> </span><span class="err">www.your-domain.com</span><span class="p">;</span>
+
+<span class="w">    </span><span class="err">ssl_certificate</span><span class="w"> </span><span class="err">/etc/letsencrypt/live/your-domain.com/fullchain.pem</span><span class="p">;</span>
+<span class="w">    </span><span class="err">ssl_certificate_key</span><span class="w"> </span><span class="err">/etc/letsencrypt/live/your-domain.com/privkey.pem</span><span class="p">;</span>
+<span class="w">    </span><span class="err">include</span><span class="w"> </span><span class="err">/etc/letsencrypt/options-ssl-nginx.conf</span><span class="p">;</span>
+<span class="w">    </span><span class="err">ssl_dhparam</span><span class="w"> </span><span class="err">/etc/letsencrypt/ssl-dhparams.pem</span><span class="p">;</span>
+
+<span class="w">    </span><span class="err">location</span><span class="w"> </span><span class="err">/</span><span class="w"> </span><span class="err">{</span>
+<span class="w">        </span><span class="err">proxy_pass</span><span class="w"> </span><span class="n">http</span><span class="p">:</span><span class="o">//</span><span class="n">localhost</span><span class="o">:</span><span class="mi">5678</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_set_header</span><span class="w"> </span><span class="err">Host</span><span class="w"> </span><span class="err">$host</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_set_header</span><span class="w"> </span><span class="err">X-Forwarded-For</span><span class="w"> </span><span class="err">$proxy_add_x_forwarded_for</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_set_header</span><span class="w"> </span><span class="err">X-Forwarded-Proto</span><span class="w"> </span><span class="err">$scheme</span><span class="p">;</span>
+
+<span class="w">        </span><span class="err">#</span><span class="w"> </span><span class="err">adding</span><span class="w"> </span><span class="err">these</span><span class="w"> </span><span class="err">lines</span><span class="w"> </span><span class="err">for</span><span class="w"> </span><span class="n">n8n</span><span class="p">:</span>
+<span class="w">        </span><span class="n">proxy_set_header</span><span class="w"> </span><span class="n">Upgrade</span><span class="w"> </span><span class="err">$</span><span class="n">http_upgrade</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_set_header</span><span class="w"> </span><span class="err">Connection</span><span class="w"> </span><span class="err">&#39;upgrade&#39;</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_http_version</span><span class="w"> </span><span class="err">1.1</span><span class="p">;</span>
+<span class="w">        </span><span class="err">chunked_transfer_encoding</span><span class="w"> </span><span class="err">off</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_buffering</span><span class="w"> </span><span class="err">off</span><span class="p">;</span>
+<span class="w">        </span><span class="err">proxy_cache</span><span class="w"> </span><span class="err">off</span><span class="p">;</span>
+<span class="w">        </span><span class="err">add_header</span><span class="w"> </span><span class="err">Access-Control-Allow-Methods</span><span class="w"> </span><span class="err">&quot;POST,</span><span class="w"> </span><span class="err">GET,</span><span class="w"> </span><span class="err">OPTIONS&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="err">add_header</span><span class="w"> </span><span class="err">Access-Control-Allow-Headers</span><span class="w"> </span><span class="err">&quot;Origin,</span><span class="w"> </span><span class="err">Authorization,</span><span class="w"> </span><span class="err">Accept&quot;</span><span class="p">;</span>
+<span class="w">        </span><span class="err">add_header</span><span class="w"> </span><span class="err">Access-Control-Allow-Credentials</span><span class="w"> </span><span class="err">true</span><span class="p">;</span>
+<span class="w">        </span><span class="err">add_header</span><span class="w"> </span><span class="err">Access-Control-Allow-Origin</span><span class="w"> </span><span class="err">*</span><span class="p">;</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="err">}</span>
+</code></pre></div>
+
 <h3>Enable the NGINX Configuration</h3>
 <div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>ln<span class="w"> </span>-s<span class="w"> </span>/etc/nginx/sites-available/n8n<span class="w"> </span>/etc/nginx/sites-enabled/
 </code></pre></div>
 
-<p>Now this part confused me a bit, but after a while it makes sense.
-You create a site configuration in <code>sites-available</code> and it just sits there.
-But when you decide to actually use this site, you <em>enable</em> it by creating a symlink
-(like a shortcut, so you don't the file itself) in <code>sites-enabled</code>.
-nginx tries to serve only sites that are <em>enabled</em>, not all sites that are simply <em>available</em>.</p>
+<p>Now this part used to confuse me a bit, but after a while it makes sense.</p>
+<p>You create a site configuration in <code>sites-available</code> and it just sits there.</p>
+<p>But when you decide to actually use this site, you <em>enable</em> it by creating a symlink (like a shortcut, so you don't the file itself) in <code>sites-enabled</code>. </p>
+<p>nginx only tries to serve sites that are <em>enabled</em>, not all sites that are simply <em>available</em>.</p>
 <h3>Check NGINX Configuration</h3>
 <p>This will return errors if something is wrong with the config file:</p>
 <div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>nginx<span class="w"> </span>-t

@@ -1,44 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom"><title>Mitya's Self-Explanatory</title><link href="https://lemontree210.github.io/" rel="alternate"></link><link href="https://lemontree210.github.io/feeds/all.atom.xml" rel="self"></link><id>https://lemontree210.github.io/</id><updated>2025-06-15T11:00:00+03:00</updated><entry><title>Hosting an app in a Docker container. What the heck is a reverse proxy?</title><link href="https://lemontree210.github.io/hosting-an-app-in-a-docker-container-what-the-heck-is-a-reverse-proxy.html" rel="alternate"></link><published>2025-06-15T11:00:00+03:00</published><updated>2025-06-15T11:00:00+03:00</updated><author><name>Dmitry Kolomatskiy</name></author><id>tag:lemontree210.github.io,2025-06-15:/hosting-an-app-in-a-docker-container-what-the-heck-is-a-reverse-proxy.html</id><summary type="html">&lt;p&gt;One of my goals recently has been to try and automate some of my PC routines.
-I didn't think it was possible at all, but then &lt;a href="https://www.linkedin.com/in/lena-shakurova/"&gt;Lena Shakurova&lt;/a&gt;
-wrote/spoke about &lt;a href="https://n8n.io/"&gt;n8n.io&lt;/a&gt;, so I decided to try it.&lt;/p&gt;
-&lt;p&gt;Now, n8n.io has no free plan as of June 2025 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;One of my goals recently has been to try and automate some of my PC routines.
-I didn't think it was possible at all, but then &lt;a href="https://www.linkedin.com/in/lena-shakurova/"&gt;Lena Shakurova&lt;/a&gt;
-wrote/spoke about &lt;a href="https://n8n.io/"&gt;n8n.io&lt;/a&gt;, so I decided to try it.&lt;/p&gt;
-&lt;p&gt;Now, n8n.io has no free plan as of June 2025, just a short trial period of a paid plan.
-But that's if you use their cloud to store your project. But you can run a self-hosted version for free.
-(Well, you still need some investment, but we'll get to that later.)&lt;/p&gt;
+<feed xmlns="http://www.w3.org/2005/Atom"><title>Mitya's Self-Explanatory</title><link href="https://lemontree210.github.io/" rel="alternate"></link><link href="https://lemontree210.github.io/feeds/all.atom.xml" rel="self"></link><id>https://lemontree210.github.io/</id><updated>2025-06-15T11:00:00+03:00</updated><entry><title>Hosting an app in a Docker container. What the heck is a reverse proxy?</title><link href="https://lemontree210.github.io/hosting-an-app-in-a-docker-container-what-the-heck-is-a-reverse-proxy.html" rel="alternate"></link><published>2025-06-15T11:00:00+03:00</published><updated>2025-06-15T11:00:00+03:00</updated><author><name>Dmitry Kolomatskiy</name></author><id>tag:lemontree210.github.io,2025-06-15:/hosting-an-app-in-a-docker-container-what-the-heck-is-a-reverse-proxy.html</id><summary type="html">&lt;p&gt;One of my goals recently has been to try and automate some of my PC routines. I didn't think it was possible at all, but then &lt;a href="https://www.linkedin.com/in/lena-shakurova/"&gt;Lena Shakurova&lt;/a&gt; wrote/spoke about &lt;a href="https://n8n.io/"&gt;n8n.io&lt;/a&gt;, so I decided to try it.&lt;/p&gt;
+&lt;p&gt;Now, n8n.io has no free plan as of June 2025 …&lt;/p&gt;</summary><content type="html">&lt;p&gt;One of my goals recently has been to try and automate some of my PC routines. I didn't think it was possible at all, but then &lt;a href="https://www.linkedin.com/in/lena-shakurova/"&gt;Lena Shakurova&lt;/a&gt; wrote/spoke about &lt;a href="https://n8n.io/"&gt;n8n.io&lt;/a&gt;, so I decided to try it.&lt;/p&gt;
+&lt;p&gt;Now, n8n.io has no free plan as of June 2025, just a short trial period of a paid plan. But that's if you use their cloud to store your project.&lt;/p&gt;
+&lt;p&gt;But you can run a self-hosted version for free. (Well, you still need some investment, but we'll get to that later.)&lt;/p&gt;
 &lt;h2&gt;What n8n already has in their docs when it comes to deployment&lt;/h2&gt;
 &lt;ul&gt;
 &lt;li&gt;There are some instructions on server setup listed in the
 &lt;a href="https://docs.n8n.io/hosting/installation/server-setups/"&gt;official docs&lt;/a&gt;.&lt;/li&gt;
 &lt;li&gt;There is a &lt;a href="https://github.com/n8n-io/self-hosted-ai-starter-kit"&gt;repo&lt;/a&gt; where you can download a self-hosted AI starter kit.&lt;/li&gt;
 &lt;/ul&gt;
-&lt;p&gt;I found no simple instructions for setting up n8n without docker compose, that I'm not yet fully
-familiar with, and on just some random web server, not Digital Ocean or AWS.&lt;/p&gt;
-&lt;p&gt;So I thought that I would figure it out, learning basics of Docker along the way
-and refreshing my memory of what a reverse proxy actually is because I'm going to need it.&lt;/p&gt;
+&lt;p&gt;I found no simple instructions for setting up n8n without docker compose, that I'm not yet fully familiar with, and on just some random web server, not Digital Ocean or AWS.&lt;/p&gt;
+&lt;p&gt;So I thought that I would figure it out, learning basics of Docker along the way and refreshing my memory of what a reverse proxy actually is because I'm going to need it.&lt;/p&gt;
 &lt;h2&gt;Important concepts&lt;/h2&gt;
 &lt;p&gt;Ok, here's what I needed to learn/know/understand in order to run n8n on my own server:&lt;/p&gt;
 &lt;h3&gt;Docker&lt;/h3&gt;
-&lt;p&gt;&lt;a href="https://www.linkedin.com/in/nana-janashia/"&gt;Nana Janashia&lt;/a&gt; made an 
-&lt;a href="https://www.youtube.com/watch?v=pg19Z8LL06w"&gt;incredibly helpful intro&lt;/a&gt; to Docker
-(just take a moment to look at the view count, it's more than many music and standup videos!).
-There was all I needed to know: basically, a Docker container is a thing that uses your
-operating system (Linux for vast majority of servers) and puts an application layer on top of it.
-You have to get a Docker &lt;em&gt;image&lt;/em&gt;, which contains the setup of this application layer, and create
-a &lt;em&gt;container&lt;/em&gt; where it will be installed and run.&lt;/p&gt;
+&lt;p&gt;&lt;a href="https://www.linkedin.com/in/nana-janashia/"&gt;Nana Janashia&lt;/a&gt; made an &lt;a href="https://www.youtube.com/watch?v=pg19Z8LL06w"&gt;incredibly helpful intro&lt;/a&gt; to Docker (just take a moment to look at the view count, it's more than many music and standup videos!). There was all I needed to know: basically, a Docker container is a thing that uses your
+operating system (Linux for vast majority of servers) and puts an application layer on top of it. You have to get a Docker &lt;em&gt;image&lt;/em&gt;, which contains the setup of this application layer, and create a &lt;em&gt;container&lt;/em&gt; where it will be installed and run.&lt;/p&gt;
 &lt;h3&gt;Nginx as a reverse proxy&lt;/h3&gt;
-&lt;p&gt;I had already known something about nginx. Just in case: it's a web server, i.e. a program that
-runs on the remote server and answers HTTP(S) requests. I know that there are configuration files
-you have to create in the right places. But what was also important to refresh in my memory was
-that nginx acts as a &lt;em&gt;reverse proxy&lt;/em&gt;, and this is relevant for serving n8n (or any other app?).&lt;/p&gt;
-&lt;p&gt;A "normal" proxy is what you could use on your own computer to access some web resources. It sits 
-between your computer and the web server you're trying to access. So, a reverse proxy does
-the thing in the opposite direction: it receives a request on some port that is exposed to the
-internet, and then forwards it to (in my case) an app that is listening to some other port.
-That other port is not exposed to the internet. This way nginx handles all incoming requests,
-improving security.&lt;/p&gt;
+&lt;p&gt;I had already known something about nginx. Just in case: it's a web server, i.e. a program that runs on the remote server and answers HTTP(S) requests. I know that there are configuration files
+you have to create in the right places. But what was also important to refresh in my memory was that nginx acts as a &lt;em&gt;reverse proxy&lt;/em&gt;, and this is relevant for serving n8n (or any other app?).&lt;/p&gt;
+&lt;p&gt;A "normal" proxy is what you could use on your own computer to access some web resources. It sits between your computer and the web server you're trying to access.&lt;/p&gt;
+&lt;p&gt;A reverse proxy does the thing in the opposite direction: it receives a request on some port that is exposed to the internet, and then forwards it to (in my case) an app that is listening to some other port. That other port is not exposed to the internet. This way nginx handles all incoming requests, improving security.&lt;/p&gt;
 &lt;h2&gt;Setting up&lt;/h2&gt;
 &lt;h3&gt;Install and start Docker and NGINX&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;    &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;update
@@ -55,10 +37,9 @@ improving security.&lt;/p&gt;
 
 &lt;p&gt;Make sure you keep nginx and Docker up to date in your system.&lt;/p&gt;
 &lt;h3&gt;Set up a certificate for your domain&lt;/h3&gt;
-&lt;p&gt;This is the investment bit :)
-n8n will rightfully complain without https, so we need an SSL certificate.&lt;/p&gt;
-&lt;p&gt;The investment is not in a certificate as it can be generated for free, but in a domain name
-you will generate the certificate for.&lt;/p&gt;
+&lt;p&gt;This is the investment bit :) n8n will rightfully complain without https, so we need an SSL certificate.&lt;/p&gt;
+&lt;p&gt;(Even if you ignore n8n's complaints, you won't be able to connect e.g. your Google drive for n8n to access your files unless HTTPS connection can be established.)&lt;/p&gt;
+&lt;p&gt;The investment is not in a certificate as it can be generated for free, but in a domain name you will generate the certificate for.&lt;/p&gt;
 &lt;p&gt;So, once the domain name is set up to forward to your server, let's generate a Let's Encrypt certificate.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;    &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;apt&lt;span class="w"&gt; &lt;/span&gt;install&lt;span class="w"&gt; &lt;/span&gt;certbot&lt;span class="w"&gt; &lt;/span&gt;python3-certbot-nginx&lt;span class="w"&gt; &lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;certbot&lt;span class="w"&gt; &lt;/span&gt;--nginx&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;your-domain.com&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;www.your-domain.com
@@ -69,14 +50,9 @@ you will generate the certificate for.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;  &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;docker&lt;span class="w"&gt; &lt;/span&gt;volume&lt;span class="w"&gt; &lt;/span&gt;create&lt;span class="w"&gt; &lt;/span&gt;n8n_data
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;n8n will use it as persistent storage so that your data remains intact
-even if you delete the container&lt;/p&gt;
+&lt;p&gt;n8n will use it as persistent storage so that your data remains intact even if you delete the container&lt;/p&gt;
 &lt;h3&gt;Start the n8n Container&lt;/h3&gt;
-&lt;p&gt;As Nana Janashia explains in &lt;a href="https://www.youtube.com/watch?v=pg19Z8LL06w"&gt;her Docker crash course&lt;/a&gt;,
-you can either first &lt;em&gt;pull&lt;/em&gt; the image from a remote registry and then &lt;em&gt;run&lt;/em&gt; it, but you can just
-say &lt;code&gt;docker run&lt;/code&gt; and, if there is no local image, it will pull it for you.
-Also, you don't have to specify where to pull it from, because n8n.io has images uploaded
-to the official registry, &lt;a href="https://hub.docker.com/r/n8nio/n8n"&gt;Docker Hub&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;As Nana Janashia explains in &lt;a href="https://www.youtube.com/watch?v=pg19Z8LL06w"&gt;her Docker crash course&lt;/a&gt;, you can either first &lt;em&gt;pull&lt;/em&gt; the image from a remote registry and then &lt;em&gt;run&lt;/em&gt; it, but you can just say &lt;code&gt;docker run&lt;/code&gt; and, if there is no local image, it will pull it for you. Also, you don't have to specify where to pull it from, because n8n.io has images uploaded to the official registry, &lt;a href="https://hub.docker.com/r/n8nio/n8n"&gt;Docker Hub&lt;/a&gt;.&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;  &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;docker&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;--restart&lt;span class="w"&gt; &lt;/span&gt;unless-stopped&lt;span class="w"&gt; &lt;/span&gt;--name&lt;span class="w"&gt; &lt;/span&gt;n8n&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5678&lt;/span&gt;:5678&lt;span class="w"&gt; &lt;/span&gt;-v&lt;span class="w"&gt; &lt;/span&gt;n8n_data:/home/node/.n8n&lt;span class="w"&gt; &lt;/span&gt;docker.n8n.io/n8nio/n8n:stable
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
@@ -94,7 +70,7 @@ to the official registry, &lt;a href="https://hub.docker.com/r/n8nio/n8n"&gt;Doc
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;  &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;nano&lt;span class="w"&gt; &lt;/span&gt;/etc/nginx/sites-available/n8n
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Here are directives that must be in the configuration file:&lt;/p&gt;
+&lt;p&gt;Standard directives that must be in the configuration file for nginx to forward requests to an app in a container are:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="err"&gt;listen&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;443&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
 &lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;listen&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;443&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
@@ -118,15 +94,47 @@ to the official registry, &lt;a href="https://hub.docker.com/r/n8nio/n8n"&gt;Doc
 &lt;code&gt;proxy_pass&lt;/code&gt; tells nginx to forward incoming requests that came to port &lt;code&gt;443&lt;/code&gt;
 (standard port for https) to port &lt;code&gt;5678&lt;/code&gt; on &lt;code&gt;localhost&lt;/code&gt;.
 Which is the port that n8n is listening to.&lt;/p&gt;
+&lt;p&gt;But for n8n it's not enough. In order for specifically n8n to work properly, we need more directives, otherwise the app will complain about not being able to connect to the server (see &lt;a href="https://community.n8n.io/t/error-while-executing-workflow/28560/8"&gt;this discussion&lt;/a&gt;).&lt;/p&gt;
+&lt;p&gt;Here is my updated nginx config file:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="nt"&gt;server&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="p"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="err"&gt;listen&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;443&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="n"&gt;listen&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="cp"&gt;[&lt;/span&gt;&lt;span class="p"&gt;::&lt;/span&gt;&lt;span class="cp"&gt;]&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;443&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;ssl&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="err"&gt;server_name&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;your-domain.com&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;www.your-domain.com&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="err"&gt;ssl_certificate&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;/etc/letsencrypt/live/your-domain.com/fullchain.pem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="err"&gt;ssl_certificate_key&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;/etc/letsencrypt/live/your-domain.com/privkey.pem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="err"&gt;include&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;/etc/letsencrypt/options-ssl-nginx.conf&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="err"&gt;ssl_dhparam&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;/etc/letsencrypt/ssl-dhparams.pem&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="err"&gt;location&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;/&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;{&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;proxy_pass&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;http&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;&lt;span class="o"&gt;//&lt;/span&gt;&lt;span class="n"&gt;localhost&lt;/span&gt;&lt;span class="o"&gt;:&lt;/span&gt;&lt;span class="mi"&gt;5678&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;proxy_set_header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;Host&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;$host&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;proxy_set_header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;X-Forwarded-For&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;$proxy_add_x_forwarded_for&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;proxy_set_header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;X-Forwarded-Proto&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;$scheme&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;#&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;adding&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;these&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;lines&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;for&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;n8n&lt;/span&gt;&lt;span class="p"&gt;:&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="n"&gt;proxy_set_header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="n"&gt;Upgrade&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;$&lt;/span&gt;&lt;span class="n"&gt;http_upgrade&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;proxy_set_header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;Connection&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;&amp;#39;upgrade&amp;#39;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;proxy_http_version&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;1.1&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;chunked_transfer_encoding&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;proxy_buffering&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;proxy_cache&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;off&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;add_header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;Access-Control-Allow-Methods&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;&amp;quot;POST,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;GET,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;OPTIONS&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;add_header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;Access-Control-Allow-Headers&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;&amp;quot;Origin,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;Authorization,&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;Accept&amp;quot;&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;add_header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;Access-Control-Allow-Credentials&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;true&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;        &lt;/span&gt;&lt;span class="err"&gt;add_header&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;Access-Control-Allow-Origin&lt;/span&gt;&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="err"&gt;*&lt;/span&gt;&lt;span class="p"&gt;;&lt;/span&gt;
+&lt;span class="w"&gt;    &lt;/span&gt;&lt;span class="p"&gt;}&lt;/span&gt;
+&lt;span class="err"&gt;}&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;h3&gt;Enable the NGINX Configuration&lt;/h3&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;  &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;ln&lt;span class="w"&gt; &lt;/span&gt;-s&lt;span class="w"&gt; &lt;/span&gt;/etc/nginx/sites-available/n8n&lt;span class="w"&gt; &lt;/span&gt;/etc/nginx/sites-enabled/
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
-&lt;p&gt;Now this part confused me a bit, but after a while it makes sense.
-You create a site configuration in &lt;code&gt;sites-available&lt;/code&gt; and it just sits there.
-But when you decide to actually use this site, you &lt;em&gt;enable&lt;/em&gt; it by creating a symlink
-(like a shortcut, so you don't the file itself) in &lt;code&gt;sites-enabled&lt;/code&gt;.
-nginx tries to serve only sites that are &lt;em&gt;enabled&lt;/em&gt;, not all sites that are simply &lt;em&gt;available&lt;/em&gt;.&lt;/p&gt;
+&lt;p&gt;Now this part used to confuse me a bit, but after a while it makes sense.&lt;/p&gt;
+&lt;p&gt;You create a site configuration in &lt;code&gt;sites-available&lt;/code&gt; and it just sits there.&lt;/p&gt;
+&lt;p&gt;But when you decide to actually use this site, you &lt;em&gt;enable&lt;/em&gt; it by creating a symlink (like a shortcut, so you don't the file itself) in &lt;code&gt;sites-enabled&lt;/code&gt;. &lt;/p&gt;
+&lt;p&gt;nginx only tries to serve sites that are &lt;em&gt;enabled&lt;/em&gt;, not all sites that are simply &lt;em&gt;available&lt;/em&gt;.&lt;/p&gt;
 &lt;h3&gt;Check NGINX Configuration&lt;/h3&gt;
 &lt;p&gt;This will return errors if something is wrong with the config file:&lt;/p&gt;
 &lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;  &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;nginx&lt;span class="w"&gt; &lt;/span&gt;-t
