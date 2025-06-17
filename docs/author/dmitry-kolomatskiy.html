@@ -90,9 +90,17 @@ you have to create in the right places. But what was also important to refresh i
 </code></pre></div>
 
 <p>n8n will use it as persistent storage so that your data remains intact even if you delete the container</p>
+<h3>Create <code>.env</code> file</h3>
+<p>Since we'll be using n8n to connect to some external services, it will need some environment variables. The easiest way to define them is in a file called <code>.env</code> that you can put in basically any directory.</p>
+<p>For starters, it can contain following variables:</p>
+<div class="highlight"><pre><span></span><code><span class="na">N8N_EXTERNAL_URL</span><span class="o">=</span><span class="s">https://your.domain.com/</span>
+<span class="na">WEBHOOK_URL</span><span class="o">=</span><span class="s">https://your.domain.com/</span>
+<span class="na">N8N_PROTOCOL</span><span class="o">=</span><span class="s">https</span>
+</code></pre></div>
+
 <h3>Start the n8n Container</h3>
 <p>As Nana Janashia explains in <a href="https://www.youtube.com/watch?v=pg19Z8LL06w">her Docker crash course</a>, you can either first <em>pull</em> the image from a remote registry and then <em>run</em> it, but you can just say <code>docker run</code> and, if there is no local image, it will pull it for you. Also, you don't have to specify where to pull it from, because n8n.io has images uploaded to the official registry, <a href="https://hub.docker.com/r/n8nio/n8n">Docker Hub</a>.</p>
-<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--restart<span class="w"> </span>unless-stopped<span class="w"> </span>--name<span class="w"> </span>n8n<span class="w"> </span>-p<span class="w"> </span><span class="m">5678</span>:5678<span class="w"> </span>-v<span class="w"> </span>n8n_data:/home/node/.n8n<span class="w"> </span>docker.n8n.io/n8nio/n8n:stable
+<div class="highlight"><pre><span></span><code><span class="w">  </span>sudo<span class="w"> </span>docker<span class="w"> </span>run<span class="w"> </span>-d<span class="w"> </span>--restart<span class="w"> </span>unless-stopped<span class="w"> </span>--name<span class="w"> </span>n8n<span class="w"> </span>--env-file<span class="w"> </span>~/.env<span class="w"> </span>-p<span class="w"> </span><span class="m">5678</span>:5678<span class="w"> </span>-v<span class="w"> </span>n8n_data:/home/node/.n8n<span class="w"> </span>docker.n8n.io/n8nio/n8n:stable
 </code></pre></div>
 
 <p>Let's break down the parameters of <code>docker run</code>:</p>
@@ -100,6 +108,7 @@ you have to create in the right places. But what was also important to refresh i
 <li><code>-d</code>: Run container in detached mode (in the background)</li>
 <li><code>--restart unless-stopped</code>: Automatically restart the container unless explicitly stopped</li>
 <li><code>--name n8n</code>: Name the container "n8n" for easier reference. It's much easier to use the name, not the ID.</li>
+<li><code>--env-file ~/.env</code>: Use the specified <code>.env</code> file (this example assumes it was created in the home directory)</li>
 <li><code>-p 5678:5678</code>: Map port 5678 on the host to port 5678 in the container. As Nana says, it's good practice to preserve the port number that the app is using by default. Note that when I say "map port 5678" on the host, I mean <code>localhost</code> on my webserver. It will be accessed internally by nginx, not from the outside using browsers!</li>
 <li><code>-v n8n_data:/home/node/.n8n</code>: Attach the volume for data persistence that we created earlier.</li>
 <li><code>docker.n8n.io/n8nio/n8n:stable</code>: The Docker image to use (official n8n image from Docker Hub). I'm using the tag <code>stable</code> here, you can use a different one.</li>

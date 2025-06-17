@@ -51,9 +51,17 @@ you have to create in the right places. But what was also important to refresh i
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;n8n will use it as persistent storage so that your data remains intact even if you delete the container&lt;/p&gt;
+&lt;h3&gt;Create &lt;code&gt;.env&lt;/code&gt; file&lt;/h3&gt;
+&lt;p&gt;Since we'll be using n8n to connect to some external services, it will need some environment variables. The easiest way to define them is in a file called &lt;code&gt;.env&lt;/code&gt; that you can put in basically any directory.&lt;/p&gt;
+&lt;p&gt;For starters, it can contain following variables:&lt;/p&gt;
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="na"&gt;N8N_EXTERNAL_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;https://your.domain.com/&lt;/span&gt;
+&lt;span class="na"&gt;WEBHOOK_URL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;https://your.domain.com/&lt;/span&gt;
+&lt;span class="na"&gt;N8N_PROTOCOL&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="s"&gt;https&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+
 &lt;h3&gt;Start the n8n Container&lt;/h3&gt;
 &lt;p&gt;As Nana Janashia explains in &lt;a href="https://www.youtube.com/watch?v=pg19Z8LL06w"&gt;her Docker crash course&lt;/a&gt;, you can either first &lt;em&gt;pull&lt;/em&gt; the image from a remote registry and then &lt;em&gt;run&lt;/em&gt; it, but you can just say &lt;code&gt;docker run&lt;/code&gt; and, if there is no local image, it will pull it for you. Also, you don't have to specify where to pull it from, because n8n.io has images uploaded to the official registry, &lt;a href="https://hub.docker.com/r/n8nio/n8n"&gt;Docker Hub&lt;/a&gt;.&lt;/p&gt;
-&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;  &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;docker&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;--restart&lt;span class="w"&gt; &lt;/span&gt;unless-stopped&lt;span class="w"&gt; &lt;/span&gt;--name&lt;span class="w"&gt; &lt;/span&gt;n8n&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5678&lt;/span&gt;:5678&lt;span class="w"&gt; &lt;/span&gt;-v&lt;span class="w"&gt; &lt;/span&gt;n8n_data:/home/node/.n8n&lt;span class="w"&gt; &lt;/span&gt;docker.n8n.io/n8nio/n8n:stable
+&lt;div class="highlight"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;code&gt;&lt;span class="w"&gt;  &lt;/span&gt;sudo&lt;span class="w"&gt; &lt;/span&gt;docker&lt;span class="w"&gt; &lt;/span&gt;run&lt;span class="w"&gt; &lt;/span&gt;-d&lt;span class="w"&gt; &lt;/span&gt;--restart&lt;span class="w"&gt; &lt;/span&gt;unless-stopped&lt;span class="w"&gt; &lt;/span&gt;--name&lt;span class="w"&gt; &lt;/span&gt;n8n&lt;span class="w"&gt; &lt;/span&gt;--env-file&lt;span class="w"&gt; &lt;/span&gt;~/.env&lt;span class="w"&gt; &lt;/span&gt;-p&lt;span class="w"&gt; &lt;/span&gt;&lt;span class="m"&gt;5678&lt;/span&gt;:5678&lt;span class="w"&gt; &lt;/span&gt;-v&lt;span class="w"&gt; &lt;/span&gt;n8n_data:/home/node/.n8n&lt;span class="w"&gt; &lt;/span&gt;docker.n8n.io/n8nio/n8n:stable
 &lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
 
 &lt;p&gt;Let's break down the parameters of &lt;code&gt;docker run&lt;/code&gt;:&lt;/p&gt;
@@ -61,6 +69,7 @@ you have to create in the right places. But what was also important to refresh i
 &lt;li&gt;&lt;code&gt;-d&lt;/code&gt;: Run container in detached mode (in the background)&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;--restart unless-stopped&lt;/code&gt;: Automatically restart the container unless explicitly stopped&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;--name n8n&lt;/code&gt;: Name the container "n8n" for easier reference. It's much easier to use the name, not the ID.&lt;/li&gt;
+&lt;li&gt;&lt;code&gt;--env-file ~/.env&lt;/code&gt;: Use the specified &lt;code&gt;.env&lt;/code&gt; file (this example assumes it was created in the home directory)&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;-p 5678:5678&lt;/code&gt;: Map port 5678 on the host to port 5678 in the container. As Nana says, it's good practice to preserve the port number that the app is using by default. Note that when I say "map port 5678" on the host, I mean &lt;code&gt;localhost&lt;/code&gt; on my webserver. It will be accessed internally by nginx, not from the outside using browsers!&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;-v n8n_data:/home/node/.n8n&lt;/code&gt;: Attach the volume for data persistence that we created earlier.&lt;/li&gt;
 &lt;li&gt;&lt;code&gt;docker.n8n.io/n8nio/n8n:stable&lt;/code&gt;: The Docker image to use (official n8n image from Docker Hub). I'm using the tag &lt;code&gt;stable&lt;/code&gt; here, you can use a different one.&lt;/li&gt;
