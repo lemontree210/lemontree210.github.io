@@ -41,10 +41,10 @@
 <p>Now, while moving in a direction of project management in IT, and also getting a referral for a technical writer role, I decided, it was time to create at least some simple documentation for <code>tinybear</code>.</p>
 <p>Today it took me about an hour to get this done using <a href="https://www.perplexity.ai/">Perplexity</a> and <a href="https://www.qodo.ai/">Qodo</a> (this is not an advert). I used Perplexity to research options for creating documentation and then Qodo in my IDE to suggest additions/changes to project files.</p>
 <h2>Choose an approach</h2>
-<p>I chose the approach that is considered the simplest one: MkDocs + GitHub pages. Sphinx is not needed for simple projects.</p>
+<p>I chose the approach that is considered the simplest one: MkDocs + GitHub Pages. Sphinx is not needed for simple projects.</p>
 <p>I already have GitHub Pages (you know that since you're here), so <code>tinybear</code> documentation cannot just be at <code>https://lemontree210.github.io</code>. I thought it would be a problem, but turns out I can easily deploy my docs to a "subdirectory" (in my case, <code>https://lemontree210.github.io/tinybear/</code>).</p>
 <h2>Change settings of the repo</h2>
-<p>The GitHub Action we're going to set up will need to create and write to a separate branch, which is common practice for hosting docs on GitHub pages.</p>
+<p>The GitHub Action we're going to set up will need to create and write to a separate branch, which is common practice for hosting docs on GitHub Pages.</p>
 <p>The action will fail if repo workflow permissions are set to read only.</p>
 <p>So at <code>https://github.com/[user]/[repo]/settings/actions</code> you need to scroll down to "Workflow permissions" and choose "Read and write permissions".</p>
 <h2>Set up mkdocs</h2>
@@ -126,7 +126,7 @@
 </code></pre></div>
 
 <h2>Set up Pages for the repo</h2>
-<p>In Settings -&gt; Pages (<code>https://github.com/[user]/[repo]/settings/pages</code>) you need to set up deployment with "Source" set to "Deploy from a branch" and "Branch" set to <code>gh-pages</code> and directory within this branch set to <code>/root</code>. As you can see in YAML configuration above, the <code>gh-pages</code> branch will be used as source for GitHub pages. So, the Action takes what's on <code>master</code> now, puts it into <code>gh-pages</code> and GitHub Pages take content from there.</p>
+<p>In Settings -&gt; Pages (<code>https://github.com/[user]/[repo]/settings/pages</code>) you need to set up deployment with "Source" set to "Deploy from a branch" and "Branch" set to <code>gh-pages</code> and directory within this branch set to <code>/root</code>. As you can see in YAML configuration above, the <code>gh-pages</code> branch will be used as source for GitHub Pages. So, the Action takes what's on <code>master</code> now, puts it into <code>gh-pages</code> and GitHub Pages take content from there.</p>
 <h2>Test online</h2>
 <p>Since I don't push directly to <code>master</code>, I had a separate branch for introducing this new feature. Obviously, I want to see whether GitHub Pages render the docs fine before. So I <strong>temporarily</strong> amend the <code>deploy.yml</code>, replacing the first line as follows:</p>
 <div class="highlight"><pre><span></span><code><span class="nt">on</span><span class="p">:</span>
@@ -136,7 +136,7 @@
 </code></pre></div>
 
 <p>Then, after pushing to this branch, you can check status of your actions in "Actions" section at <code>https://github.com/[user]/[repo]/actions</code>.</p>
-<p>If actions run fine and you see that GitHub pages renders the docs (in my case at <code>https://lemontree210.github.io/tinybear/</code>), remember to <strong>revert the change in branch name</strong> back to <code>master</code> (or <code>main</code> if your repo has <code>main</code> as main branch).</p>
+<p>If actions run fine and you see that GitHub Pages renders the docs (in my case at <code>https://lemontree210.github.io/tinybear/</code>), remember to <strong>revert the change in branch name</strong> back to <code>master</code> (or <code>main</code> if your repo has <code>main</code> as main branch).</p>
 <h2>Merge your PR</h2>
 <p>And check Actions to make sure they ran, then refresh docs page to make sure the documentation is shown.</p>
 <h2>Publish on PyPi</h2>
