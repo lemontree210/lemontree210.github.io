@@ -12,7 +12,7 @@ License: none (public domain)
     --code-bg-color: #17202a;
     --accent-color: #C7254E;
     --tab-bg-hover: var(--code-bg-color);
-    --info-bg-color: var(--code-gb-color);
+    --info-bg-color: var(--code-bg-color);
 }
 
 
