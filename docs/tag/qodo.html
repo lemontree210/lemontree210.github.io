@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Mitya's Self-Explanatory | articles tagged "Qodo"</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Dmitry Kolomatskiy" />
+</head>
+<body>
+    <header>
+        <nav style="overflow: hidden;">
+            <ul>
+                <li class="ephemeral selected"><a href="/tag/qodo.html">Qodo</a></li>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+        <div class="header_box" style="height: 50px">
+        <h1><a href="/">
+            <image src='' class="avatar" width="50px" /><span class="site_title">Mitya's Self-Explanatory</span>
+            </a></h1></div>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Aug 29, 2025</h4>
+
+            <article class="post">
+                <h2 class="title">
+                    <a href="/creating-documentation-for-my-project-with-ai-in-one-hour.html" rel="bookmark" title="Permanent Link to &quot;Creating documentation for my project with AI in one hour&quot;">Creating documentation for my project with AI in one hour</a>
+                </h2>
+
+                
+                
+
+                <p>I have a Python library called <code>tinybear</code> that contains all simple tools I have used to work with files in different formats. It is <a href="https://pypi.org/project/tinybear">published</a> on <code>pypi</code>.</p>
+<p>I was too lazy to write a blog post about publishing my project, but, in a nutshell, <a href="https://python-poetry.org/"><code>poetry</code></a> makes these things rather easy.</p>
+<p>Now, while moving in a direction of project management in IT, and also getting a referral for a technical writer role, I decided, it was time to create at least some simple documentation for <code>tinybear</code>.</p>
+<p>Today it took me about an hour to get this done using <a href="https://www.perplexity.ai/">Perplexity</a> and <a href="https://www.qodo.ai/">Qodo</a> (this is not an advert). I used Perplexity to research options for creating documentation and then Qodo in my IDE to suggest additions/changes to project files.</p>
+<h2>Choose an approach</h2>
+<p>I chose the approach that is considered the simplest one: MkDocs + GitHub Pages. Sphinx is not needed for simple projects.</p>
+<p>I already have GitHub Pages (you know that since you're here), so <code>tinybear</code> documentation cannot just be at <code>https://lemontree210.github.io</code>. I thought it would be a problem, but turns out I can easily deploy my docs to a "subdirectory" (in my case, <code>https://lemontree210.github.io/tinybear/</code>).</p>
+<h2>Change settings of the repo</h2>
+<p>The GitHub Action we're going to set up will need to create and write to a separate branch, which is common practice for hosting docs on GitHub Pages.</p>
+<p>The action will fail if repo workflow permissions are set to read only.</p>
+<p>So at <code>https://github.com/[user]/[repo]/settings/actions</code> you need to scroll down to "Workflow permissions" and choose "Read and write permissions".</p>
+<h2>Set up mkdocs</h2>
+<p>If you use <code>poetry</code>:</p>
+<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>add<span class="w"> </span>mkdocs<span class="w"> </span>mkdocs-material
+</code></pre></div>
+
+<p>Or with <code>pip</code>:</p>
+<div class="highlight"><pre><span></span><code>pip<span class="w"> </span>install<span class="w"> </span>mkdocs<span class="w"> </span>mkdocs-material
+</code></pre></div>
+
+<p>Create initial files by running from within the project directory:</p>
+<div class="highlight"><pre><span></span><code>mkdocs<span class="w"> </span>new<span class="w"> </span>.
+</code></pre></div>
+
+<p>This will create <code>mkdocs.yml</code> (configuration file) and <code>docs/index.md</code> (documentation homepage).</p>
+<p>My configuration file looks as follows (adapted from <a href="https://krython.com/tutorial/python/documentation-sphinx-and-mkdocs/">this tutorial</a>):</p>
+<div class="highlight"><pre><span></span><code><span class="nt">site_name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">TinyBear Documentation</span>
+<span class="nt">site_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">https://lemontree210.github.io/tinybear/</span>
+<span class="nt">extra</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">base_url</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">/tinybear/</span>
+<span class="nt">nav</span><span class="p">:</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Home</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">index.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Getting Started</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">getting_started.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">Usage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">usage.md</span>
+<span class="w">  </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">API Reference</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">api.md</span>
+<span class="nt">docs_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">docs</span>
+<span class="nt">site_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">site</span>
+<span class="nt">theme</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">material</span>
+<span class="w">  </span><span class="nt">features</span><span class="p">:</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">navigation.instant</span><span class="w">  </span><span class="c1"># ⚡ Instant loading</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">navigation.tracking</span><span class="w">  </span><span class="c1"># 📊 Track scroll position</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">navigation.tabs.sticky</span><span class="w">  </span><span class="c1"># 📌 Sticky navigation</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">navigation.top</span><span class="w">  </span><span class="c1"># ⬆️ Back to top button</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search.suggest</span><span class="w">  </span><span class="c1"># 🔍 Search suggestions</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">search.share</span><span class="w">  </span><span class="c1"># 🔗 Share search</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">header.autohide</span><span class="w">  </span><span class="c1"># 🎩 Auto-hide header</span>
+<span class="w">    </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">content.code.annotate</span><span class="w">  </span><span class="c1"># 💡 Code annotations</span>
+</code></pre></div>
+
+<h2>Create actual documentation</h2>
+<p>I used Qodo to amend <code>index.md</code> and create MarkDown files for "Getting Started", "Usage" and "API Reference", which are standard sections of any documentation.</p>
+<h2>Check locally</h2>
+<div class="highlight"><pre><span></span><code>mkdocs<span class="w"> </span>serve
+</code></pre></div>
+
+<p>Starts a local server so you can look at the docs before pushing to the remote repo.</p>
+<h2>Set up GitHub Action</h2>
+<p>I created <code>deploy.yml</code> in <code>.github/workflows</code> directory:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy MkDocs to GitHub Pages (gh-pages branch)</span>
+
+<span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">master</span>
+
+<span class="nt">jobs</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">deploy</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">runs-on</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">ubuntu-latest</span>
+<span class="w">    </span><span class="nt">steps</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/checkout@v4</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Set up Python</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">actions/setup-python@v5</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">python-version</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3.x</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Install dependencies</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">pip install mkdocs mkdocs-material</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Build docs</span>
+<span class="w">        </span><span class="nt">run</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">|</span>
+<span class="w">          </span><span class="no">mkdocs build --site-dir site</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="nt">name</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">Deploy to GitHub Pages</span>
+<span class="w">        </span><span class="nt">uses</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">peaceiris/actions-gh-pages@v4</span>
+<span class="w">        </span><span class="nt">with</span><span class="p">:</span>
+<span class="w">          </span><span class="nt">github_token</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">${{ secrets.GITHUB_TOKEN }}</span>
+<span class="w">          </span><span class="nt">publish_branch</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">gh-pages</span>
+<span class="w">          </span><span class="nt">publish_dir</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">./site</span>
+</code></pre></div>
+
+<h2>Set up Pages for the repo</h2>
+<p>In Settings -&gt; Pages (<code>https://github.com/[user]/[repo]/settings/pages</code>) you need to set up deployment with "Source" set to "Deploy from a branch" and "Branch" set to <code>gh-pages</code> and directory within this branch set to <code>/root</code>. As you can see in YAML configuration above, the <code>gh-pages</code> branch will be used as source for GitHub Pages. So, the Action takes what's on <code>master</code> now, puts it into <code>gh-pages</code> and GitHub Pages take content from there.</p>
+<h2>Test online</h2>
+<p>Since I don't push directly to <code>master</code>, I had a separate branch for introducing this new feature. Obviously, I want to see whether GitHub Pages render the docs fine before. So I <strong>temporarily</strong> amend the <code>deploy.yml</code>, replacing the first line as follows:</p>
+<div class="highlight"><pre><span></span><code><span class="nt">on</span><span class="p">:</span>
+<span class="w">  </span><span class="nt">push</span><span class="p">:</span>
+<span class="w">    </span><span class="nt">branches</span><span class="p">:</span>
+<span class="w">      </span><span class="p p-Indicator">-</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">feat/add-mkdocs</span><span class="w">  </span><span class="c1"># this is the branch from which I created a PR to merge the branch into master</span>
+</code></pre></div>
+
+<p>Then, after pushing to this branch, you can check status of your actions in "Actions" section at <code>https://github.com/[user]/[repo]/actions</code>.</p>
+<p>If actions run fine and you see that GitHub Pages renders the docs (in my case at <code>https://lemontree210.github.io/tinybear/</code>), remember to <strong>revert the change in branch name</strong> back to <code>master</code> (or <code>main</code> if your repo has <code>main</code> as main branch).</p>
+<h2>Merge your PR</h2>
+<p>And check Actions to make sure they ran, then refresh docs page to make sure the documentation is shown.</p>
+<h2>Publish on PyPi</h2>
+<p>With <code>poetry</code>, I first updated pyproject.toml to include links to docs:</p>
+<div class="highlight"><pre><span></span><code><span class="k">[tool.poetry]</span>
+<span class="n">name</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;tinybear&quot;</span>
+<span class="n">version</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;0.0.1&quot;</span>
+<span class="n">description</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;Where you don&#39;t need pandas yet. Tools to work with TXT, CSV, HTML, XLSX etc.&quot;</span>
+<span class="n">documentation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://lemontree210.github.io/tinybear/&quot;</span>
+<span class="c1"># ...</span>
+
+<span class="k">[tool.poetry.urls]</span>
+<span class="n">Homepage</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://github.com/lemontree210/tinybear&quot;</span>
+<span class="n">Documentation</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s2">&quot;https://lemontree210.github.io/tinybear/&quot;</span>
+</code></pre></div>
+
+<p>and then ran:</p>
+<div class="highlight"><pre><span></span><code>poetry<span class="w"> </span>build
+poetry<span class="w"> </span>publish
+</code></pre></div>
+
+<p>Now on PyPi I can see a link to my documentation in a sidebar.</p>
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/creating-documentation-for-my-project-with-ai-in-one-hour.html">posted at 14:00</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/documentation.html" rel="tag">Documentation</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/mkdocs.html" class="tags">MkDocs</a>
+                    &nbsp;<a href="/tag/github.html" class="tags">GitHub</a>
+                    &nbsp;<a href="/tag/github-actions.html" class="tags">GitHub Actions</a>
+                    &nbsp;<a href="/tag/qodo.html" class="tags selected">Qodo</a>
+                    &nbsp;<a href="/tag/python.html" class="tags">Python</a>
+                </div>
+            </article>
+
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <a href="https://github.com/tcarwash/blue-penguin-dark">Blue Penguin Dark</a> Theme
+                &middot;
+                Powered by <a href="http://getpelican.com">Pelican</a>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+</body>
+</html>
