@@ -23,7 +23,7 @@
         </nav>
         <div class="header_box" style="height: 50px">
         <h1><a href="/">
-            <image src='' class="avatar" width="50px" /><span class="site_title">Mitya's Self-Explanatory</span>
+            <img src='' class="avatar" width="50px" /><span class="site_title">Mitya's Self-Explanatory</span>
             </a></h1></div>
         </div>
     </header>
@@ -38,7 +38,7 @@
                 
                 
 
-                <blockquote>
+					<blockquote>
 <p><em>This text was inspired by the section "<a href="https://developers.google.com/machine-learning/crash-course/neural-networks/activation-functions">Activation functions</a>" in Google's Machine Learning Crash Course and <a href="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/">a blog post</a> mentioned in that section. I decided to explain the rationale of all this to myself.</em></p>
 </blockquote>
 <p>Let's say we have a number of features and a binary classification task (e.g. whether a house will be sold, based on two features: its price and area). In case of two features, we can visualize them on a 2D graph and the task would be to calculate a formula for a straight line that separates our two classes. We do so by multiplying each value of a feature by a certain floating point number (<em>weight</em>) and then adding some floating point scalar number to the whole graph equation (that basically lifts or lowers the line on our graph), which is called <em>bias</em>. We get a straight line that has some slope (determined by weights) and crosses Y axis in some point (determined by bias). </p>
@@ -70,6 +70,8 @@
 <p>Here is a beautiful visualization from <a href="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/">this blog post</a>, where two spirals are getting separated from each other after some "warping and reshaping" of the space:</p>
 <p><img width="40%" src="https://colah.github.io/posts/2014-03-NN-Manifolds-Topology/img/spiral.1-2.2-2-2-2-2-2.gif"></p>
 <p>And now, the final step. When, after much learning, a multidimensional space is created, in which data points are more or less successfully separated, a task-dependent activation function (e.g. sigmoid for binary classification, softmax for multi-class) is applied one last time. It converts the linear separation in the transformed space into a probabilistic output, ensuring the output is interpretable. This is the prediction we asked for.</p>
+                
+        
                 <div class="clear"></div>
 
                 <div class="info">
