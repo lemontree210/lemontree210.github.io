@@ -5,7 +5,8 @@ SITEURL = ""
 PATH = "content"
 OUTPUT_PATH = "docs"
 STATIC_PATHS = ["images"]
-THEME = "blue-penguin-dark"
+PLUGINS = ["minchin.pelican.plugins.summary"]
+THEME = "themes/blue-penguin-dark"
 
 TIMEZONE = 'Europe/Moscow'
 
