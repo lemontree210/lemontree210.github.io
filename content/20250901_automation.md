@@ -1,7 +1,7 @@
 Title: Lena Shakurova on automation + other people that can teach you to automate routine tasks 
 Date: 2025-09-01 21:00
 Category: Automation
-Tags: n8n,
+Tags: Automation, AI, n8n, Zapier, Make.com, Airtable, API, Apify, OpenRouter, Tavily, Pyrus, Relevance AI, Relay.app, Pipedream, Notion, Gmail, Calendar Management, Telegram, Content Automation, Lead Generation, Workflow, No-code, Low-code, Integration, Vector Search, AI Agents, Clutch, Instantly, Perplexity, MindStudio, Workflow Automation  
 
 I watched [this video on automation](https://www.youtube.com/watch?v=7JVrmSDVHW4) by Lena Shakurova and I thought I could use a summary.
 
@@ -79,39 +79,36 @@ For maximum affordability and control, n8n Community is ideal; for a plug-and-pl
 
 ### Data Collection, Processing and Storage
 
-- **Airtable**: Online relational database for storing, organizing, and integrating structured data.
-- **Apify**: Platform for web scraping and workflow automations, can output data to Airtable or Google Sheets.
-- **OpenRouter**: Unified API gateway for access to hundreds of AI models (Anthropic, Google, Meta, Mistral).
+- **[Airtable](https://airtable.com)**: Online relational database for storing, organizing, and integrating structured data.
+- **[Apify](https://apify.com)**: Platform for web scraping and workflow automations, can output data to Airtable or Google Sheets.
+- **[OpenRouter](https://openrouter.ai)**: Unified API gateway for access to hundreds of AI models (Anthropic, Google, Meta, Mistral).
+
 
 ### Lead Generation and Outreach
 
-- **Clutch**: Business directory for finding leads and company info.
-- **Instantly**: Tool for scaling and automating cold email campaigns.
-- **Upwork**: Freelance platform where automations can monitor listings, draft responses.
+- **[Clutch](https://clutch.co)**: Business directory for finding leads and company info.
+- **[Instantly](https://instantly.ai)**: Tool for scaling and automating cold email campaigns.
+- **[Upwork](https://upwork.com)**: Freelance platform where automations can monitor listings, draft responses.
 
 
 ### Media Creation and Processing
 
-- **Creatomate**: Video automation API, used to generate and edit media for content workflows.
-- **Flux/Replicate**: Image generation via model APIs, used for content/video automation.
-- **11labs**: Text-to-speech API for automating audio generation in videos.
+- **[Creatomate](https://creatomate.com)**: Video automation API, used to generate and edit media for content workflows.
+- **[Replicate](https://replicate.com)**: Image generation via model APIs, used for content/video automation.
+- **[11labs](https://11labs.io)**: Text-to-speech API for automating audio generation in videos.
 
 
 ### Research and Reference Tools
 
-- **Perplexity**: AI-powered research and information retrieval tool (direct answers, citations).
-- **Tavily**: Intelligent research agent for summarizing and extracting citations from web sources.
-- **Superhuman**: AI-powered advanced email client (mentioned in general automation discussions).
+- **[Perplexity](https://perplexity.ai)**: AI-powered research and information retrieval tool (direct answers, citations).
+- **[Tavily](https://tavily.com)**: Intelligent research agent for summarizing and extracting citations from web sources.
+- **[Superhuman](https://superhuman.com)**: AI-powered advanced email client (mentioned in general automation discussions).
 
 
-### Team Workflow and Task Management
+### Others
 
-- **Pyrus**: Workflow, task, and communication platform with document management, approval flows, and email/task integrations. Designed for modern teams, it integrates with external apps and features no-code customization.
-
-
-### Others (Mentioned/Implied)
-
-- **MindStudio**: No-code platform for building AI-driven applications.
+- **[MindStudio](https://mindstudio.com)**: No-code platform for building AI-driven applications.
+- **[Pyrus](https://pyrus.com)**: Workflow, task, and communication platform with document management, approval flows, and email/task integrations. Designed for modern teams, it integrates with external apps and features no-code customization.
 
 ***
 
@@ -123,8 +120,8 @@ For maximum affordability and control, n8n Community is ideal; for a plug-and-pl
 Lena did a wonderful job mentioning all other experts and referencing their videos.
 
 - **Nate Herk** ([YouTube](https://www.youtube.com/@nateherk)): Educator, n8n and AI automation tutorial creator, known for actionable video blueprints.
-- **[Roberto H Luna](https://www.linkedin.com/in/robertohluna/)**: Founder sharing advanced AI agentic workflows for meetings, automating post-call actions and CRM updates.
+- **[Roberto H Luna](https://www.linkedin.com/in/robertohluna/)** ([YouTube](https://www.youtube.com/@robertohluna)): Founder sharing advanced AI agentic workflows for meetings, automating post-call actions and CRM updates.
 - **[Clarence Nap](https://www.linkedin.com/in/clarence-nap/)**: On [his YouTube channel](https://www.youtube.com/@ClarenceAutomations), he demonstrated lead generation stack (Clutch, Apify, Airtable, Instantly); known for operational sales automations .
 - **[Leon van Zyl](https://www.linkedin.com/in/leonvanzyl/)** ([YouTube](https://www.youtube.com/@leonvanzyl)): AI automation educator, workflow builder focusing on beginner-friendly n8n use cases.
 
-The base of the summary was created by AI, with manual editing afterwards.
+_Note: the base of the summary was created by AI, with manual editing afterwards._
