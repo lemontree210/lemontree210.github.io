@@ -5,27 +5,29 @@ Tags: Automation, AI, n8n, Zapier, Make.com, Airtable, API, Apify, OpenRouter, T
 
 I watched [this video on automation](https://www.youtube.com/watch?v=7JVrmSDVHW4) by Lena Shakurova and I thought I could use a summary.
 
-## My checklist whether I should automate
+## I should only consider automating a process if:
 
-- Standard process with multiple steps
-- No time to do the task manually
-- Disorganization hinders proper completion
+- It's a standard process with multiple steps
+- I have no time to do the task manually
+- I'm not organized enough to follow through with the whole process properly 
 <!-- PELICAN_END_SUMMARY -->
 
 ***
 
 ## Use cases that I found relevant for me
 
-- **Calendar:** Multi-step event creation, integrating text/voice, Google Calendar, Zoom, and notification workflows. Example: AI Foundations YouTube channel—“AI agent use cases in n8n”.
-- **Knowledge Organization:** Telegram bot classifies and routes notes, links, and to-dos into the correct Notion tables or categories.
-- **Post-Meeting Calls:** AI agent analyzes call transcripts to update CRM automatically, create action lists, or write follow-up emails. See Roberto H Luna’s workflow.
-- **Content Creation:** Repurposing (e.g., YouTube to LinkedIn posts), automated newsletters, YouTube shorts agent, content distribution across platforms.
+- **Calendar:** Multi-step event creation, integrating text/voice, Google Calendar, Zoom, and notification workflows.
+- **Knowledge Organization:** For example, a Telegram bot classifies and routes notes, links, and to-dos into the correct Notion tables or categories.
+- **Post-Meeting Calls:** AI agent analyzes call transcripts to update CRM automatically, create action lists, or write follow-up emails.
+- **Content Creation:** Repurposing (e.g., YouTube to LinkedIn posts), automated newsletters, content distribution across platforms.
 - **Freelance Outreach:** Automated job notification and personalized message drafting for platforms like Upwork.
-- **Lead Generation:** Automated process using Clutch (company database), Apify (data extraction), Airtable (database), Instantly (email campaigns). See Clarence's stack example.
+- **Lead Generation:** Automated process using Clutch (company database), Apify (data extraction), Airtable (database), Instantly (email campaigns).
 - **Research:**
     - Competitor research with Perplexity and Tavily.
     - Custom “deep research” assistants for extended literature and citation extraction into PDFs.
 - **Automated Executive Assistant:** Multi-purpose agent integrating several routine functions via Telegram, Notion, etc..
+
+The key component in many workflows is an AI block that performs a classification task (e.g. to what category an email that just landed in your inbox belongs).
 
 ***
 
@@ -68,12 +70,12 @@ Pricing as of 2025
 
 Summary:
 
-- **Make.com** is good for visual, complex automations with robust data tools and a moderate price curve, but only offers cloud hosting.
-- **n8n** is loved by technical and privacy-conscious users for its open-source self-hosting, deep customization, and AI friendliness, with the most favorable pricing for the self-hosted Community Edition.
+- **Make.com** is good for visual, complex automations with robust data tools and a moderate price curve.
+- **n8n** is great because of self-hosting option (the only one that can be self-hosted, it seems) and great customization.
 - **Pipedream** is developer-centric with serverless, code-heavy flows, best for those comfortable writing JavaScript or Python.
-- **Relay.app** is focused on ease-of-use and onboarding for small teams and non-technical users, with streamlined pricing and beginner-friendly workflows.
-- **Relevance AI** fills a specialized niche as the most AI-centric workflow tool in this lineup, ideal for businesses aiming to build autonomous, customizable AI agents for a range of tasks spanning analytics, content, sales, and operations.
-- **Zapier** remains the easiest for non-techs and has the broadest app ecosystem, but costs rise quickly as usage or workflow complexity increases.
+- **Relay.app** is focused on ease-of-use and onboarding for small teams and non-technical users.
+- **Relevance AI** fills a specialized niche as the most AI-centric workflow tool in this lineup, ideal for businesses aiming to build autonomous, customizable AI agents for analytics, content, sales etc.
+- **Zapier** is seen as the easiest for non-techs and has the broadest app ecosystem, but costs rise quickly.
 
 For maximum affordability and control, n8n Community is ideal; for a plug-and-play experience, Relay.app or Zapier excel; for advanced automation and data handling, Make.com stands out.
 
@@ -100,9 +102,9 @@ For maximum affordability and control, n8n Community is ideal; for a plug-and-pl
 
 ### Research and Reference Tools
 
-- **[Perplexity](https://perplexity.ai)**: AI-powered research and information retrieval tool (direct answers, citations).
+- **[Perplexity](https://perplexity.ai)**: Just mentioning it here, I know what it is :)
 - **[Tavily](https://tavily.com)**: Intelligent research agent for summarizing and extracting citations from web sources.
-- **[Superhuman](https://superhuman.com)**: AI-powered advanced email client (mentioned in general automation discussions).
+- **[Superhuman](https://superhuman.com)**: AI-powered advanced email client.
 
 
 ### Others
