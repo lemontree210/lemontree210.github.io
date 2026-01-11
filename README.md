@@ -10,6 +10,12 @@ Generate HTML
 pelican content -s pelicanconf.py
 ```
 
+Same with verbose output
+
+```commandline
+pelican content -s pelicanconf.py -v
+```
+
 Serve locally
 
 ```commandline
