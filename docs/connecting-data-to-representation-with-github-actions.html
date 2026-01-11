@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Mitya's Self-Explanatory | Connecting data to representation with GitHub Actions</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Dmitry Kolomatskiy" />
+
+    <meta name="keywords" content="Automation,CI/CD,GitHub Actions,Workflow Automation" />
+</head>
+<body>
+    <header>
+        <nav style="overflow: hidden;">
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+        <div class="header_box" style="height: 50px">
+        <h1><a href="/">
+            <img src='' class="avatar" width="50px" /><span class="site_title">Mitya's Self-Explanatory</span>
+            </a></h1></div>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Jan 11, 2026</h4>
+
+            <article class="post">
+                <h2 class="title">
+                    <a href="/connecting-data-to-representation-with-github-actions.html" rel="bookmark" title="Permanent Link to &quot;Connecting data to representation with GitHub Actions&quot;">Connecting data to representation with GitHub Actions</a>
+                </h2>
+
+                
+                
+
+					<p>In any project that shows data to users, be it documentation or a linguistic database, data must be separated from its representation.</p>
+<p>This is almost an axiom. You have to keep your data in an easy-to-edit, non-proprietary format, while the tools with which you show the data to users can be as complex as needed. Tools tend to get outdated, and your data cannot depend on them.</p>
+
+<p>In my <a href="https://github.com/Jazyki-Mira">Jazyki Mira project</a>, I have two actively maintained repositories: one for <a href="https://github.com/Jazyki-Mira/langworld_db_data">data</a>, one for <a href="https://github.com/Jazyki-Mira/langworld_db_pyramid">a web app</a> that visualizes the data.</p>
+<p>The web app could access the data via an API, and that would be the default workflow for many cases, but I decided against it as it would require an additional web server.</p>
+<p>I went with <code>git subtree</code> (could have been <code>git submodule</code> as well): the web repo includes the data repo as a subtree.</p>
+<p>When I update the data, I update the subtree, and the web app has fresh data to show. But, until recently, I did it manually. Now it's time to automate the process.</p>
+<p>I used the <code>repository_dispatch</code> event to notify the web app repo of changes in the data repo. Here's how it works:</p>
+<h3>Prerequisites</h3>
+<p>For the workflow to work, a secret is required, which I called <code>LANGWORLD_WEB_UPDATE_PAT</code>.</p>
+<ol>
+<li>In Developer Settings of the organization, I created a fine-grained Personal Access Token (PAT) <code>LANGWORLD_WEB_UPDATE_PAT</code> with access to <code>Jazyki-Mira/langworld_db_pyramid</code> only and repository permissions <code>Contents: Read and write</code>.</li>
+<li>I then added an Actions repository secret with the same name in both <code>langworld_db_data</code> and <code>langworld_db_pyramid</code>. The value of the secret is the value of the token that I pasted manually.</li>
+<li>I will have to update secrets in both repos every year, once the token expires.</li>
+</ol>
+<blockquote>
+<h4>Side notes</h4>
+<ul>
+<li>Since I paste the value of the PAT manually, the name of the secret doesn't have to match the name of the PAT, but it's more convenient this way.</li>
+<li>I can switch to an organizational secret, which would mean that I would only need to update the secret in one place instead of two.</li>
+</ul>
+</blockquote>
+<h3>Workflow setup</h3>
+<ol>
+<li><a href="https://github.com/Jazyki-Mira/langworld_db_data/blob/master/.github/workflows/dispatch-web.yml">The trigger half of the workflow in the data repo</a> runs on every push to the <code>master</code> branch.</li>
+<li>It sends a <a href="https://docs.github.com/actions/learn-github-actions/events-that-trigger-workflows#repository_dispatch"><code>repository_dispatch</code></a> event to <a href="https://github.com/Jazyki-Mira/langworld_db_pyramid"><code>Jazyki-Mira/langworld_db_pyramid</code></a>. It uses Peter Evans's <a href="https://github.com/peter-evans/repository-dispatch">Repository Dispatch</a> GitHub Action that calls the <a href="https://docs.github.com/en/rest/repos/repos#create-a-repository-dispatch-event">GitHub API</a>.</li>
+<li>In <a href="https://github.com/Jazyki-Mira/langworld_db_pyramid/blob/master/.github/workflows/update-langworld-subtree.yml">the web repo workflow</a>, I catch the event and run an update of the git subtree, then create a new commit in the web repo. Note <code>on: repository_dispatch</code> at the top of the YAML file.</li>
+</ol>
+<blockquote>
+<p>Note: <code>repository_dispatch</code> will only trigger a workflow run in <code>langworld_db_pyramid</code> if the workflow there is set up on the <strong>default branch</strong>.</p>
+</blockquote>
+<h3>Example</h3>
+<p>Manual action:</p>
+<ul>
+<li>Made <a href="https://github.com/Jazyki-Mira/langworld_db_data/commit/06bb2629f90a7e4d303e759209d0602950f62a2f">a commit</a> in the <strong>data</strong> repo to fix a typo in the data.</li>
+</ul>
+<p>Subsequent automatic actions:</p>
+<ul>
+<li><a href="https://github.com/Jazyki-Mira/langworld_db_data/actions/runs/20877364699">GitHub Action</a> was run in the <strong>data</strong> repo to dispatch an update to <code>langworld_db_pyramid</code>.</li>
+<li><a href="https://github.com/Jazyki-Mira/langworld_db_pyramid/actions/runs/20877366062">GitHub Action</a> was triggered and run in the <strong>web</strong> repo.</li>
+<li><a href="https://github.com/Jazyki-Mira/langworld_db_pyramid/commit/e8318e71a02c1190b5df171d93f7f36ef9ab0163">A new commit was created</a>  in the <strong>web</strong> repo to reflect the change.</li>
+</ul>
+<h2>What's next</h2>
+<p>Now I have to set up my web server to automatically pull the latest changes from the web repo and reinitialize the web app.</p>
+<p>That's for the next post.</p>
+                
+        
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/connecting-data-to-representation-with-github-actions.html">posted at 12:00</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/automation.html" rel="tag">Automation</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/automation.html" class="tags">Automation</a>
+                    &nbsp;<a href="/tag/cicd.html" class="tags">CI/CD</a>
+                    &nbsp;<a href="/tag/github-actions.html" class="tags">GitHub Actions</a>
+                    &nbsp;<a href="/tag/workflow-automation.html" class="tags">Workflow Automation</a>
+                </div>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <a href="https://github.com/tcarwash/blue-penguin-dark">Blue Penguin Dark</a> Theme
+                &middot;
+                Powered by <a href="http://getpelican.com">Pelican</a>
+                &middot;
+                <a href="https://icons8.com/icon/k0TVC4tVv4Iu/oggy" target="_blank">Favicon</a> by icons8.com
+                </p>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+</body>
+</html>
