@@ -4,7 +4,11 @@ SITEURL = ""
 
 PATH = "content"
 OUTPUT_PATH = "docs"
-STATIC_PATHS = ["images"]
+STATIC_PATHS = ["images", "extra"]
+EXTRA_PATH_METADATA = {
+    'extra/favicon.ico': {'path': 'favicon.ico'},
+}
+
 PLUGINS = ["minchin.pelican.plugins.summary"]
 THEME = "themes/blue-penguin-dark"
 
