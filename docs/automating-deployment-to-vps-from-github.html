@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+        <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Mitya's Self-Explanatory | Automating deployment to VPS from GitHub</title>
+    <link rel="shortcut icon" type="image/png" href="/favicon.png">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/theme/css/main.css" type="text/css" />
+    <link rel="stylesheet" href="/theme/css/pygments.css" type="text/css" />
+    <meta name="generator" content="Pelican" />
+    <meta name="description" content="" />
+    <meta name="author" content="Dmitry Kolomatskiy" />
+
+    <meta name="keywords" content="Automation,CI/CD,GitHub Actions,Workflow Automation,Deployment,VPS,Nginx,systemd" />
+</head>
+<body>
+    <header>
+        <nav style="overflow: hidden;">
+            <ul>
+                <li><a href="/">Home</a></li>
+            </ul>
+        </nav>
+        <div class="header_box" style="height: 50px">
+        <h1><a href="/">
+            <img src='' class="avatar" width="50px" /><span class="site_title">Mitya's Self-Explanatory</span>
+            </a></h1></div>
+        </div>
+    </header>
+    <div id="wrapper">
+        <div id="content">            <h4 class="date">Jan 19, 2026</h4>
+
+            <article class="post">
+                <h2 class="title">
+                    <a href="/automating-deployment-to-vps-from-github.html" rel="bookmark" title="Permanent Link to &quot;Automating deployment to VPS from GitHub&quot;">Automating deployment to VPS from GitHub</a>
+                </h2>
+
+                
+                
+
+					<p>In <a href="20260111_repository_dispatch.md">my previous post</a>, I described a workflow that connects data with an app that visualizes the data.</p>
+<p>There's one step left: automatically deploying the web app from GitHub to a server after every push to the repo's default branch.</p>
+
+
+<p>I will not describe the details of setting up Nginx and generating an SSL certificate, as I did it in <a href="20250615_n8n.md">my post about n8n</a>.</p>
+<p>To keep things simple on my server, I set up my web app as a systemd-managed service.</p>
+<p>The main task in this workflow was enabling GitHub Actions to trigger an update on the server.</p>
+<p>There are several possible ways of doing it. I chose to let a GitHub Action access the server over SSH and run the update as if I had logged in and executed the script manually.</p>
+<p>To do so, I generated a dedicated SSH key pair for GitHub Actions, stored the private key as a GitHub Actions secret, and added the public key to the deploy user’s <code>authorized_keys</code> on the VPS.</p>
+<p>Next, I allowed a user on the VPS that my GitHub Action logs in as to run one <code>sudo</code> command without a password prompt: <code>sudo systemctl restart &lt;name of service&gt;</code>. Without this, the jobs would fail because <code>sudo</code> would prompt for a password.</p>
+<p>To do so, I edited sudoers by running </p>
+<div class="highlight"><pre><span></span><code>sudo visudo
+</code></pre></div>
+
+<p>and adding this line:</p>
+<div class="highlight"><pre><span></span><code><span class="na">&lt;username&gt; ALL</span><span class="o">=</span><span class="s">(ALL) NOPASSWD: /usr/bin/systemctl restart &lt;name of my service&gt;</span>
+</code></pre></div>
+
+<p>So now, GitHub Actions can connect to my server, run commands for checking out the latest version of my repo and then run a bash script for re-loading the web app.</p>
+<h3>Resulting workflow</h3>
+<p>Items 1-3 on the list are from <a href="20260111_repository_dispatch.md">the previous post</a></p>
+<ol>
+<li><a href="https://github.com/Jazyki-Mira/langworld_db_data/blob/master/.github/workflows/dispatch-web.yml">The trigger half of the workflow in the data repo</a> runs on every push to the <code>master</code> branch.</li>
+<li>It sends a <a href="https://docs.github.com/actions/learn-github-actions/events-that-trigger-workflows#repository_dispatch"><code>repository_dispatch</code></a> event to <a href="https://github.com/Jazyki-Mira/langworld_db_pyramid"><code>Jazyki-Mira/langworld_db_pyramid</code></a>. It uses Peter Evans's <a href="https://github.com/peter-evans/repository-dispatch">Repository Dispatch</a> GitHub Action that calls the <a href="https://docs.github.com/en/rest/repos/repos#create-a-repository-dispatch-event">GitHub API</a>.</li>
+<li>In <a href="https://github.com/Jazyki-Mira/langworld_db_pyramid/blob/master/.github/workflows/update-langworld-subtree.yml">the web repo workflow</a>, I catch the event and run an update of the git subtree, then create a new commit in the web repo. Note <code>on: repository_dispatch</code> at the top of the YAML file.</li>
+<li>In <a href="https://github.com/Jazyki-Mira/langworld_db_pyramid/blob/master/.github/workflows/deploy-prod.yml">another web repo workflow</a> I log into my VPS (note that all sensitive data is provided via secrets) and run my bash script that performs necessary operations (like applying database migrations, populating the database, compiling strings for i18n).</li>
+</ol>
+<p>The result: The time from pushing to the data repo to the web app being updated on the server is <strong>just under 1 minute</strong>. With no manual intermediate operations from my side.</p>
+<h3>Example</h3>
+<p>Manual action:</p>
+<ul>
+<li>Made <a href="https://github.com/Jazyki-Mira/langworld_db_data/commit/3db911f7ef7e7ee6a799b4e6d62fa21006f6918d">a commit</a> in the <strong>data</strong> repo to fix a typo in the data.</li>
+</ul>
+<p>Subsequent automatic actions:</p>
+<ul>
+<li><a href="https://github.com/Jazyki-Mira/langworld_db_data/actions/runs/21059018003/job/60560903175">GitHub Action</a> was run in the <strong>data</strong> repo to dispatch an update to <code>langworld_db_pyramid</code>. <strong>Run time: 4 seconds</strong>.</li>
+<li><a href="https://github.com/Jazyki-Mira/langworld_db_pyramid/actions/runs/21058683781">GitHub Action</a> was triggered by the <code>repository_dispatch</code> event and run in the <strong>web</strong> repo. <strong>Run time: 18 seconds</strong>.</li>
+<li><a href="https://github.com/Jazyki-Mira/langworld_db_pyramid/actions/runs/21059027305">GitHub Action</a> was triggered by a push to the main branch in the <strong>web</strong> repo and deployed the updated code to the VPS. <strong>Run time: 32 seconds</strong>.</li>
+</ul>
+<p><strong>Total run time: 54 seconds</strong>.</p>
+<p>I can only guess how much time and procrastination it would have taken me to do this without my 12-week-year plan.</p>
+                
+        
+                <div class="clear"></div>
+
+                <div class="info">
+                    <a href="/automating-deployment-to-vps-from-github.html">posted at 11:00</a>
+                    &nbsp;&middot;&nbsp;<a href="/category/automation.html" rel="tag">Automation</a>
+                    &nbsp;&middot;
+                    &nbsp;<a href="/tag/automation.html" class="tags">Automation</a>
+                    &nbsp;<a href="/tag/cicd.html" class="tags">CI/CD</a>
+                    &nbsp;<a href="/tag/github-actions.html" class="tags">GitHub Actions</a>
+                    &nbsp;<a href="/tag/workflow-automation.html" class="tags">Workflow Automation</a>
+                    &nbsp;<a href="/tag/deployment.html" class="tags">Deployment</a>
+                    &nbsp;<a href="/tag/vps.html" class="tags">VPS</a>
+                    &nbsp;<a href="/tag/nginx.html" class="tags">Nginx</a>
+                    &nbsp;<a href="/tag/systemd.html" class="tags">systemd</a>
+                </div>
+            </article>
+            <div class="clear"></div>
+            <footer>
+                <p>
+                <a href="https://github.com/tcarwash/blue-penguin-dark">Blue Penguin Dark</a> Theme
+                &middot;
+                Powered by <a href="http://getpelican.com">Pelican</a>
+                &middot;
+                <a href="https://icons8.com/icon/k0TVC4tVv4Iu/oggy" target="_blank">Favicon</a> by icons8.com
+                </p>
+            </footer>
+        </div>
+        <div class="clear"></div>
+    </div>
+</body>
+</html>

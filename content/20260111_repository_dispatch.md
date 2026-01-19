@@ -54,4 +54,4 @@ Subsequent automatic actions:
 
 Now I have to set up my web server to automatically pull the latest changes from the web repo and reinitialize the web app.
 
-That's for the next post.
+That's for [the next post](20260119_deploy_to_vps.md).
